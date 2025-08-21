@@ -1,0 +1,124 @@
+<!-- app/views/dashboard/index.html.erb -->
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h1>WWS Dashboard</h1>
+    <p class="date">Heute: <%= Date.current.strftime("%d.%m.%Y") %></p>
+  </div>
+
+  <!-- Statistiken -->
+  <div class="stats-grid">
+    <!-- Kunden -->
+    <div class="stat-card">
+      <h3>👥 Kunden</h3>
+      <div class="stat-number"><%= @stats[:kunden][:gesamt] %></div>
+      <div class="stat-details">
+        <span class="stat-item">Aktiv: <%= @stats[:kunden][:aktiv] %></span>
+        <span class="stat-item">Gekündigt: <%= @stats[:kunden][:gekündigt] %></span>
+      </div>
+    </div>
+
+    <!-- Aufträge -->
+    <div class="stat-card">
+      <h3>📝 Aufträge</h3>
+      <div class="stat-number"><%= @stats[:aufträge][:gesamt] %></div>
+      <div class="stat-details">
+        <span class="stat-item">Offen: <%= @stats[:aufträge][:offen] %></span>
+        <span class="stat-item">Erledigt: <%= @stats[:aufträge][:erledigt] %></span>
+      </div>
+    </div>
+
+    <!-- Lieferscheine -->
+    <div class="stat-card">
+      <h3>🚚 Lieferscheine</h3>
+      <div class="stat-number"><%= @stats[:lieferscheine][:gesamt] %></div>
+      <div class="stat-details">
+        <span class="stat-item">Heute: <%= @stats[:lieferscheine][:heute] %></span>
+        <span class="stat-item">Diese Woche: <%= @stats[:lieferscheine][:diese_woche] %></span>
+      </div>
+    </div>
+
+    <!-- Wiegescheine -->
+    <div class="stat-card">
+      <h3>⚖️ Wiegescheine</h3>
+      <div class="stat-number"><%= @stats[:wiegescheine][:gesamt] %></div>
+      <div class="stat-details">
+        <span class="stat-item">Offen: <%= @stats[:wiegescheine][:offen] %></span>
+        <span class="stat-item">Erledigt: <%= @stats[:wiegescheine][:erledigt] %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aktuelle Aktivitäten -->
+  <div class="activities">
+    <div class="activity-section">
+      <h3>Letzte Aufträge</h3>
+      <div class="activity-list">
+        <% if @recent_items[:aufträge].any? %>
+          <% @recent_items[:aufträge].each do |auftrag| %>
+            <div class="activity-item">
+              <strong>#<%= auftrag.vauftragnr %></strong>
+              <span><%= auftrag.kundenname.presence || "Kunde #{auftrag.kundennr}" %></span>
+              <span class="date"><%= auftrag.datum&.strftime("%d.%m") %></span>
+              <span class="status status-<%= auftrag.auftstatus&.downcase %>">
+                <%= auftrag.status_text %>
+              </span>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="no-data">Keine Aufträge vorhanden</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="activity-section">
+      <h3>Letzte Lieferscheine</h3>
+      <div class="activity-list">
+        <% if @recent_items[:lieferscheine].any? %>
+          <% @recent_items[:lieferscheine].each do |lieferschein| %>
+            <div class="activity-item">
+              <strong>#<%= lieferschein.liefschnr %></strong>
+              <span><%= lieferschein.kundenname.presence || "Kunde #{lieferschein.kundennr}" %></span>
+              <span class="date"><%= lieferschein.datum&.strftime("%d.%m") %></span>
+              <span class="status <%= lieferschein.gedruckt == 'J' ? 'status-done' : 'status-pending' %>">
+                <%= lieferschein.gedruckt == 'J' ? 'Gedruckt' : 'Offen' %>
+              </span>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="no-data">Keine Lieferscheine vorhanden</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="activity-section">
+      <h3>Letzte Wiegescheine</h3>
+      <div class="activity-list">
+        <% if @recent_items[:wiegescheine].any? %>
+          <% @recent_items[:wiegescheine].each do |wiegeschein| %>
+            <div class="activity-item">
+              <strong>#<%= wiegeschein.wiegescheinnr %></strong>
+              <span><%= wiegeschein.vollständige_bezeichnung.presence || wiegeschein.artikelnr %></span>
+              <span class="date"><%= wiegeschein.datum&.strftime("%d.%m") %></span>
+              <span class="status <%= wiegeschein.erledigt == 'J' ? 'status-done' : 'status-pending' %>">
+                <%= wiegeschein.erledigt == 'J' ? 'Erledigt' : 'Offen' %>
+              </span>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="no-data">Keine Wiegescheine vorhanden</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h3>Schnellzugriff</h3>
+    <div class="actions-grid">
+      <%= link_to "Neuer Kunde", "#", class: "action-btn" %>
+      <%= link_to "Neuer Auftrag", "#", class: "action-btn" %>
+      <%= link_to "Neuer Lieferschein", "#", class: "action-btn" %>
+      <%= link_to "Neue Wiegung", "#", class: "action-btn" %>
+    </div>
+  </div>
+</div>
