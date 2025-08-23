@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_21_185429) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_23_183343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "adressen", primary_key: "nummer", id: :serial, force: :cascade do |t|
+  create_table "addresses", primary_key: "nummer", id: :integer, default: nil, force: :cascade do |t|
     t.string "name1", limit: 30
     t.string "name2", limit: 30
     t.string "branche", limit: 40
@@ -47,13 +47,370 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_185429) do
     t.string "lname2", limit: 100
     t.string "lbranche", limit: 100
     t.integer "erledigt"
-    t.index ["art"], name: "index_adressen_on_art"
-    t.index ["email"], name: "index_adressen_on_email"
-    t.index ["erledigt"], name: "index_adressen_on_erledigt"
-    t.index ["knr"], name: "index_adressen_on_knr"
-    t.index ["name1"], name: "index_adressen_on_name1"
-    t.index ["ort"], name: "index_adressen_on_ort"
-    t.index ["plz"], name: "index_adressen_on_plz"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["art"], name: "idx_addresses_art"
+    t.index ["erledigt"], name: "idx_addresses_erledigt"
+    t.check_constraint "(art::text = ANY (ARRAY['K'::character varying, 'L'::character varying, 'S'::character varying]::text[])) OR art IS NULL", name: "chk_addresses_art"
+    t.check_constraint "(erledigt = ANY (ARRAY[0, 1])) OR erledigt IS NULL", name: "chk_addresses_erledigt"
+  end
+
+  create_table "customers", primary_key: "kundennr", id: :integer, default: nil, force: :cascade do |t|
+    t.integer "kundgruppe"
+    t.integer "bundesland"
+    t.string "kontoauszug", limit: 1
+    t.datetime "datumlauszug", precision: nil
+    t.integer "nrlauszug"
+    t.float "saldolauszug"
+    t.string "saldorechnung", limit: 1
+    t.integer "lfdrechnnr"
+    t.integer "rechnkunde"
+    t.string "umsatzsteuer", limit: 1
+    t.string "werbetext", limit: 1
+    t.string "rechnformular", limit: 8
+    t.float "rabatt"
+    t.string "zahlungart", limit: 1
+    t.integer "zinstabsoll"
+    t.integer "zinstabhaben"
+    t.float "zinssatzsoll"
+    t.float "zinssatzhaben"
+    t.string "zinsbuchung", limit: 1
+    t.datetime "datumlzinsabr", precision: nil
+    t.float "saldolzinsabr"
+    t.string "selbstabhrabatt", limit: 12
+    t.float "selbstabhbetrag"
+    t.string "bonusberecht", limit: 1
+    t.integer "mitgliednr"
+    t.integer "geschkonto"
+    t.string "gekuendigt", limit: 1
+    t.string "kuendgrund", limit: 30
+    t.datetime "datumeintritt", precision: nil
+    t.datetime "datumaustritt", precision: nil
+    t.integer "pflichtanteile"
+    t.integer "pflichtanteilegez"
+    t.integer "anteilgekuend1"
+    t.datetime "datumkuend1", precision: nil
+    t.integer "anteilgekuend2"
+    t.datetime "datumkuend2", precision: nil
+    t.string "trans", limit: 1
+    t.string "trfield", limit: 1
+    t.integer "repl_id"
+    t.integer "repl_database"
+    t.string "organschaft", limit: 1
+    t.string "bemerkford", limit: 1
+    t.string "kontoauszug2", limit: 1
+    t.integer "rechnanzahl"
+    t.float "nk_stdsatz"
+    t.float "nk_fahrtkosten"
+    t.string "offeneposten", limit: 1
+    t.float "regalflaeche"
+    t.string "fremdwaehrung", limit: 3
+    t.string "konzernkunde", limit: 1
+    t.float "gk_aufschlag"
+    t.float "ernte_mitglbeitrag"
+    t.integer "kreditorkto2"
+    t.integer "rabstnr_ls"
+    t.string "formular_ls", limit: 12
+    t.string "versandspesen", limit: 1
+    t.string "zert_pflicht", limit: 1
+    t.datetime "zert_datum", precision: nil
+    t.string "formular_stang", limit: 12
+    t.string "formular_stauf", limit: 12
+    t.string "lieferbedkurz", limit: 5
+    t.string "zahlbedtext", limit: 80
+    t.string "zbabdatum", limit: 1
+    t.integer "versandavis"
+    t.float "proforma_rabatt1"
+    t.float "proforma_rabatt2"
+    t.datetime "versandavisdatum", precision: nil
+    t.integer "zb_id"
+    t.integer "zb_dbid"
+    t.string "formular_ernte1", limit: 12
+    t.string "formular_ernte2", limit: 12
+    t.string "formular_ernte3", limit: 12
+    t.integer "versandaviseinzel"
+    t.string "versandavisvb", limit: 1
+    t.float "vkpreiszuschlagek"
+    t.datetime "vkpreiszuschldatum", precision: nil
+    t.integer "landwamtnr"
+    t.string "lwa_betriebsnr", limit: 20
+    t.string "kontoauszug1", limit: 1
+    t.integer "kundennrschnittst"
+    t.string "edi_iln", limit: 15
+    t.integer "edi_typ"
+    t.integer "edi_uebertrnr"
+    t.string "edi_prefix", limit: 15
+    t.string "rechnsammelliste", limit: 1
+    t.float "marge"
+    t.string "edi_iln_nad_su", limit: 15
+    t.integer "g12_statistik"
+    t.string "kundstatusw", limit: 1
+    t.string "versicherung", limit: 1
+    t.float "versprozent"
+    t.float "schwellenwert"
+    t.string "gutschrverr", limit: 1
+    t.float "rechnlistenprov"
+    t.integer "liefbewertung_basis"
+    t.integer "andavisexport"
+    t.integer "sprachenr"
+    t.string "nabizertstelleregnr", limit: 40
+    t.string "bruttoberechn", limit: 1
+    t.integer "tankrechnungpdf"
+    t.string "zblieferdat", limit: 1
+    t.integer "preisqzuabsortenr"
+    t.float "minbestellwert"
+    t.float "vkbonus"
+    t.integer "mvo_ek_kennz"
+    t.integer "mvo_vk_kennz"
+    t.string "vertrbeauf1keineprov", limit: 1
+    t.string "vertrbeauf2keineprov", limit: 1
+    t.string "formular_wiegeschein", limit: 12
+    t.integer "edi_kostenst"
+    t.integer "anzdruckliefersch"
+    t.string "sknpflschg", limit: 1
+    t.string "kundennrdeuka", limit: 15
+    t.string "edi_keinstorno", limit: 1
+    t.string "selbstabrechner", limit: 1
+    t.string "edi_kundennr", limit: 70
+    t.integer "edi_typorders"
+    t.integer "edi_typdesadv"
+    t.integer "edi_uebertrnr_desadv"
+    t.string "formular_nve", limit: 12
+    t.string "explosivnachweis", limit: 1
+    t.string "edi_iln_desadv", limit: 15
+    t.integer "kontraktzusammenstellung"
+    t.integer "id_unternehmensgegenstand"
+    t.integer "dbid_unternehmensgegenstand"
+    t.datetime "explosivnachweisdatum", precision: nil
+    t.datetime "geaendertam", precision: nil
+    t.integer "edi_abkommensnr"
+    t.string "selbstabrechnerek", limit: 1
+    t.string "formular_etikett", limit: 12
+    t.integer "creditreform_status"
+    t.datetime "creditreform_timestamp", precision: nil
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["bundesland"], name: "idx_customers_bundesland"
+    t.index ["kundgruppe"], name: "idx_customers_kundgruppe"
+    t.check_constraint "(gekuendigt::text = ANY (ARRAY['J'::character varying, 'N'::character varying]::text[])) OR gekuendigt IS NULL", name: "chk_customers_gekuendigt"
+    t.check_constraint "(umsatzsteuer::text = ANY (ARRAY['J'::character varying, 'N'::character varying]::text[])) OR umsatzsteuer IS NULL", name: "chk_customers_umsatzsteuer"
+  end
+
+  create_table "delivery_note_line_items", id: false, force: :cascade do |t|
+    t.integer "delivery_note_id", null: false
+    t.integer "position_number", null: false
+    t.string "position_type", limit: 1, default: "N"
+    t.string "article_number", limit: 12
+    t.string "description1", limit: 40
+    t.string "description2", limit: 40
+    t.text "long_text"
+    t.integer "sales_order_id"
+    t.integer "sales_order_position_number"
+    t.integer "warehouse"
+    t.integer "department"
+    t.float "delivered_quantity", default: 0.0, null: false
+    t.integer "unit_key"
+    t.string "unit", limit: 5
+    t.decimal "unit_price", precision: 10, scale: 4, null: false
+    t.decimal "list_price", precision: 10, scale: 4
+    t.float "discount_percent", default: 0.0
+    t.string "discount_type", limit: 3
+    t.float "vat_rate", default: 19.0
+    t.decimal "net_amount", precision: 10, scale: 2, default: "0.0"
+    t.decimal "vat_amount", precision: 10, scale: 2, default: "0.0"
+    t.decimal "gross_amount", precision: 10, scale: 2, default: "0.0"
+    t.float "weight", default: 0.0
+    t.integer "contract_number"
+    t.integer "contract_position"
+    t.string "sales_rep", limit: 5
+    t.text "loading_info"
+    t.index ["article_number"], name: "index_delivery_note_line_items_on_article_number"
+    t.index ["contract_number"], name: "index_delivery_note_line_items_on_contract_number"
+    t.index ["delivery_note_id", "position_number"], name: "idx_delivery_note_line_items_pk", unique: true
+    t.index ["delivery_note_id"], name: "index_delivery_note_line_items_on_delivery_note_id"
+    t.index ["department"], name: "index_delivery_note_line_items_on_department"
+    t.index ["sales_order_id"], name: "index_delivery_note_line_items_on_sales_order_id"
+    t.index ["sales_rep"], name: "index_delivery_note_line_items_on_sales_rep"
+    t.index ["warehouse"], name: "index_delivery_note_line_items_on_warehouse"
+  end
+
+  create_table "delivery_notes", id: :serial, force: :cascade do |t|
+    t.date "delivery_date", null: false
+    t.string "operator", limit: 5
+    t.string "sales_rep", limit: 5
+    t.string "customer_name", limit: 30
+    t.string "customer_order_number", limit: 50
+    t.string "delivery_terms", limit: 80
+    t.string "project", limit: 80
+    t.string "delivery_type", limit: 40
+    t.boolean "self_pickup", default: false
+    t.boolean "printed", default: false
+    t.integer "invoice_number"
+    t.integer "warehouse"
+    t.integer "truck_number"
+    t.string "vehicle", limit: 22
+    t.string "license_plate1", limit: 12
+    t.string "license_plate2", limit: 12
+    t.string "time", limit: 5
+    t.decimal "net_amount", precision: 10, scale: 2, default: "0.0"
+    t.decimal "gross_amount", precision: 10, scale: 2, default: "0.0"
+    t.text "delivery_info"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.bigint "sales_order_id"
+    t.bigint "customer_id"
+    t.bigint "customer_address_id"
+    t.bigint "billing_address_id"
+    t.bigint "shipping_address_id"
+    t.index ["billing_address_id"], name: "index_delivery_notes_on_billing_address_id"
+    t.index ["customer_address_id"], name: "index_delivery_notes_on_customer_address_id"
+    t.index ["customer_id"], name: "index_delivery_notes_on_customer_id"
+    t.index ["delivery_date"], name: "index_delivery_notes_on_delivery_date"
+    t.index ["invoice_number"], name: "index_delivery_notes_on_invoice_number"
+    t.index ["operator"], name: "index_delivery_notes_on_operator"
+    t.index ["printed"], name: "index_delivery_notes_on_printed"
+    t.index ["sales_order_id"], name: "index_delivery_notes_on_sales_order_id"
+    t.index ["self_pickup"], name: "index_delivery_notes_on_self_pickup"
+    t.index ["shipping_address_id"], name: "index_delivery_notes_on_shipping_address_id"
+    t.index ["updated_at"], name: "index_delivery_notes_on_updated_at"
+  end
+
+  create_table "sales_order_line_items", id: false, force: :cascade do |t|
+    t.integer "sales_order_id", null: false
+    t.integer "position_number", null: false
+    t.string "position_type", limit: 1, default: "N"
+    t.string "article_number", limit: 12
+    t.string "description1", limit: 40
+    t.string "description2", limit: 40
+    t.text "long_text"
+    t.string "article_type", limit: 4
+    t.integer "sales_group"
+    t.integer "warehouse"
+    t.integer "department"
+    t.float "quantity", null: false
+    t.integer "unit_key"
+    t.string "unit", limit: 5
+    t.decimal "unit_price", precision: 10, scale: 4, null: false
+    t.decimal "gross_price", precision: 10, scale: 4
+    t.decimal "list_price", precision: 10, scale: 4
+    t.float "discount_percent", default: 0.0
+    t.string "discount_type", limit: 3
+    t.float "vat_rate", default: 19.0
+    t.decimal "net_amount", precision: 10, scale: 2
+    t.decimal "vat_amount", precision: 10, scale: 2
+    t.decimal "gross_amount", precision: 10, scale: 2
+    t.float "weight", default: 0.0
+    t.boolean "commission", default: false
+    t.boolean "foreign_goods", default: false
+    t.integer "contract_number"
+    t.integer "contract_position"
+    t.string "sales_rep", limit: 5
+    t.text "comment"
+    t.index ["article_number"], name: "index_sales_order_line_items_on_article_number"
+    t.index ["contract_number"], name: "index_sales_order_line_items_on_contract_number"
+    t.index ["department"], name: "index_sales_order_line_items_on_department"
+    t.index ["sales_order_id", "position_number"], name: "idx_sales_order_line_items_pk", unique: true
+    t.index ["sales_order_id"], name: "index_sales_order_line_items_on_sales_order_id"
+    t.index ["sales_rep"], name: "index_sales_order_line_items_on_sales_rep"
+    t.index ["warehouse"], name: "index_sales_order_line_items_on_warehouse"
+  end
+
+  create_table "sales_orders", id: :serial, force: :cascade do |t|
+    t.date "order_date", null: false
+    t.string "operator", limit: 5
+    t.string "sales_rep", limit: 5
+    t.string "status", limit: 1
+    t.boolean "completed", default: false
+    t.string "customer_name", limit: 30
+    t.string "customer_order_number", limit: 50
+    t.string "customer_department", limit: 30
+    t.string "delivery_terms", limit: 80
+    t.string "project", limit: 80
+    t.string "delivery_type", limit: 40
+    t.integer "currency_code"
+    t.integer "vat_code"
+    t.integer "discount1_days"
+    t.float "discount1_percent"
+    t.integer "discount2_days"
+    t.float "discount2_percent"
+    t.integer "net_days"
+    t.date "due_date"
+    t.string "payment_terms_text", limit: 80
+    t.integer "warehouse"
+    t.boolean "self_pickup", default: false
+    t.string "delivery_terms_short", limit: 5
+    t.date "planned_delivery_date"
+    t.string "reference", limit: 80
+    t.date "valid_until"
+    t.text "general_info"
+    t.text "production_info"
+    t.text "loading_info"
+    t.text "delivery_info"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.bigint "customer_id"
+    t.bigint "customer_address_id"
+    t.bigint "billing_address_id"
+    t.bigint "shipping_address_id"
+    t.bigint "pickup_address_id"
+    t.index ["billing_address_id"], name: "index_sales_orders_on_billing_address_id"
+    t.index ["completed"], name: "index_sales_orders_on_completed"
+    t.index ["customer_address_id"], name: "index_sales_orders_on_customer_address_id"
+    t.index ["customer_id"], name: "index_sales_orders_on_customer_id"
+    t.index ["customer_order_number"], name: "index_sales_orders_on_customer_order_number"
+    t.index ["operator"], name: "index_sales_orders_on_operator"
+    t.index ["order_date"], name: "index_sales_orders_on_order_date"
+    t.index ["pickup_address_id"], name: "index_sales_orders_on_pickup_address_id"
+    t.index ["planned_delivery_date"], name: "index_sales_orders_on_planned_delivery_date"
+    t.index ["sales_rep"], name: "index_sales_orders_on_sales_rep"
+    t.index ["shipping_address_id"], name: "index_sales_orders_on_shipping_address_id"
+    t.index ["status"], name: "index_sales_orders_on_status"
+    t.index ["updated_at"], name: "index_sales_orders_on_updated_at"
+  end
+
+  create_table "weighing_slips", id: :serial, force: :cascade do |t|
+    t.integer "database_id", null: false
+    t.integer "weighing_slip_number", null: false
+    t.integer "slip_type"
+    t.date "weighing_date", null: false
+    t.string "time", limit: 5
+    t.string "operator", limit: 5
+    t.string "article_number", limit: 12
+    t.string "description1", limit: 40
+    t.string "description2", limit: 40
+    t.datetime "first_weighing_time"
+    t.datetime "second_weighing_time"
+    t.float "first_weight"
+    t.float "second_weight"
+    t.float "net_weight"
+    t.float "total_weight"
+    t.decimal "price", precision: 10, scale: 4
+    t.string "vehicle_registration", limit: 20
+    t.boolean "completed", default: false
+    t.string "target_slip", limit: 2
+    t.integer "document_number"
+    t.text "info_text"
+    t.integer "contract_number"
+    t.integer "contract_position"
+    t.string "completion_reason", limit: 80
+    t.boolean "printed", default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.bigint "customer_id"
+    t.bigint "shipping_address_id"
+    t.bigint "sales_order_id"
+    t.bigint "delivery_note_id"
+    t.index ["article_number"], name: "index_weighing_slips_on_article_number"
+    t.index ["completed"], name: "index_weighing_slips_on_completed"
+    t.index ["contract_number"], name: "index_weighing_slips_on_contract_number"
+    t.index ["customer_id"], name: "index_weighing_slips_on_customer_id"
+    t.index ["delivery_note_id"], name: "index_weighing_slips_on_delivery_note_id"
+    t.index ["sales_order_id"], name: "index_weighing_slips_on_sales_order_id"
+    t.index ["shipping_address_id"], name: "index_weighing_slips_on_shipping_address_id"
+    t.index ["updated_at"], name: "index_weighing_slips_on_updated_at"
+    t.index ["vehicle_registration"], name: "index_weighing_slips_on_vehicle_registration"
+    t.index ["weighing_date"], name: "index_weighing_slips_on_weighing_date"
+    t.index ["weighing_slip_number"], name: "index_weighing_slips_on_weighing_slip_number", unique: true
   end
 
   create_table "wws_kunden", primary_key: "kundennr", id: :serial, force: :cascade do |t|
@@ -1205,4 +1562,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_185429) do
     t.index ["status"], name: "index_wws_wiegeschein_on_status"
     t.index ["wiegescheinnr"], name: "index_wws_wiegeschein_on_wiegescheinnr"
   end
+
+  add_foreign_key "addresses", "customers", column: "nummer", primary_key: "kundennr"
+  add_foreign_key "delivery_note_line_items", "delivery_notes"
+  add_foreign_key "delivery_note_line_items", "sales_orders"
+  add_foreign_key "delivery_notes", "sales_orders"
+  add_foreign_key "sales_order_line_items", "sales_orders"
+  add_foreign_key "weighing_slips", "delivery_notes"
+  add_foreign_key "weighing_slips", "sales_orders"
 end

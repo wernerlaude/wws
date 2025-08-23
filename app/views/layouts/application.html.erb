@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Dispo" %></title>
+    <title><%= content_for(:title) || "WWS Metz Agrar Center" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -23,6 +23,12 @@
   </head>
 
   <body>
+  <%=render "shared/top-menu" %>
+  <div class="app-layout" data-controller="style">
+    <%=render "shared/sidebar" %>
+    <main class="main-content">
     <%= yield %>
+    </main>
+  </div>
   </body>
 </html>

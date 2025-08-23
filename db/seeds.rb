@@ -1,590 +1,609 @@
 # db/seeds.rb
 
-# Hilfsmethode um nur verfügbare Attribute zu verwenden
+# Helper method to only use available attributes
 def safe_attributes(model_class, attributes)
   available_columns = model_class.column_names.map(&:to_sym)
   attributes.select { |key, _| available_columns.include?(key) }
 end
 
-puts "🌱 WWS Seed Daten werden erstellt..."
+puts "🌱 WWS Seed Data Creation Started..."
 
-# Nur in Development löschen, und nur wenn Tabellen existieren
+# Only delete in development and only if tables exist
 if Rails.env.development?
-  puts "⚠️  Lösche bestehende Daten..."
+  puts "⚠️  Deleting existing data..."
 
-  # Prüfen ob Tabellen existieren, bevor wir löschen
+  # Check if tables exist before deleting
   tables = ActiveRecord::Base.connection.tables
 
-  WwsWiegeschein.delete_all if tables.include?('wws_wiegeschein1')
-  WwsLieferscheinPosition.delete_all if tables.include?('wws_vliefer2')
-  WwsLieferschein.delete_all if tables.include?('wws_vliefer1')
-  WwsVerkaufPosition.delete_all if tables.include?('wws_verkauf2')
-  WwsVerkauf.delete_all if tables.include?('wws_verkauf1')
-  WwsKunde.delete_all if tables.include?('wws_kunden1')
-  Adresse.delete_all if tables.include?('adressen')
+  WeighingSlip.delete_all if tables.include?('weighing_slips')
+  DeliveryNoteLineItem.delete_all if tables.include?('delivery_note_line_items')
+  DeliveryNote.delete_all if tables.include?('delivery_notes')
+  SalesOrderLineItem.delete_all if tables.include?('sales_order_line_items')
+  SalesOrder.delete_all if tables.include?('sales_orders')
+  Customer.delete_all if tables.include?('customers')
+  Address.delete_all if tables.include?('addresses')
 end
 
-# 1. ADRESSEN erstellen
-puts "📍 Erstelle Adressen..."
+# 1. CREATE ADDRESSES
+puts "📍 Creating Addresses..."
 
-adressen = [
+# Check if we're using old models (with nummer) or new models (with id)
+using_old_models = Address.column_names.include?('nummer')
+
+addresses = [
   {
-    nummer: 1001,
     name1: "Müller Agrar GmbH",
-    name2: "Getreidehandel",
-    branche: "Landwirtschaft",
-    strasse: "Hauptstraße 15",
-    nat: "D",
-    plz: "94436",
-    ort: "Simbach",
-    land: "Deutschland",
-    telefon1: "08571/12345",
-    telefon2: "08571/12346",
-    telefax: "08571/12347",
+    name2: "Grain Trading",
+    industry: using_old_models ? nil : "Agriculture",
+    branche: using_old_models ? "Landwirtschaft" : nil,
+    street: using_old_models ? nil : "Hauptstraße 15",
+    strasse: using_old_models ? "Hauptstraße 15" : nil,
+    country_code: using_old_models ? nil : "D",
+    nat: using_old_models ? "D" : nil,
+    postal_code: using_old_models ? nil : "94436",
+    plz: using_old_models ? "94436" : nil,
+    city: using_old_models ? nil : "Simbach",
+    ort: using_old_models ? "Simbach" : nil,
+    country: using_old_models ? nil : "Germany",
+    land: using_old_models ? "Deutschland" : nil,
+    phone1: using_old_models ? nil : "08571/12345",
+    telefon1: using_old_models ? "08571/12345" : nil,
+    phone2: using_old_models ? nil : "08571/12346",
+    telefon2: using_old_models ? "08571/12346" : nil,
+    fax: using_old_models ? nil : "08571/12347",
+    telefax: using_old_models ? "08571/12347" : nil,
     email: "info@mueller-agrar.de",
-    homepage: "www.mueller-agrar.de",
-    art: "K"
+    website: using_old_models ? nil : "www.mueller-agrar.de",
+    homepage: using_old_models ? "www.mueller-agrar.de" : nil,
+    address_type: using_old_models ? nil : "K",
+    art: using_old_models ? "K" : nil,
+    nummer: using_old_models ? 1001 : nil
   },
   {
-    nummer: 1002,
-    name1: "Bauer Schmidt",
-    name2: "Milchviehbetrieb",
-    branche: "Milchwirtschaft",
-    strasse: "Dorfstraße 8",
-    nat: "D",
-    plz: "84347",
-    ort: "Pfarrkirchen",
-    land: "Deutschland",
-    telefon1: "08561/98765",
+    name1: "Farmer Schmidt",
+    name2: "Dairy Farm",
+    industry: using_old_models ? nil : "Dairy Farming",
+    branche: using_old_models ? "Milchwirtschaft" : nil,
+    street: using_old_models ? nil : "Dorfstraße 8",
+    strasse: using_old_models ? "Dorfstraße 8" : nil,
+    country_code: using_old_models ? nil : "D",
+    nat: using_old_models ? "D" : nil,
+    postal_code: using_old_models ? nil : "84347",
+    plz: using_old_models ? "84347" : nil,
+    city: using_old_models ? nil : "Pfarrkirchen",
+    ort: using_old_models ? "Pfarrkirchen" : nil,
+    country: using_old_models ? nil : "Germany",
+    land: using_old_models ? "Deutschland" : nil,
+    phone1: using_old_models ? nil : "08561/98765",
+    telefon1: using_old_models ? "08561/98765" : nil,
     email: "schmidt@milchbauer.de",
-    art: "K"
+    address_type: using_old_models ? nil : "K",
+    art: using_old_models ? "K" : nil,
+    nummer: using_old_models ? 1002 : nil
   },
   {
-    nummer: 1003,
     name1: "Genossenschaft Rottal eG",
-    name2: "Waren- und Dienstleistungen",
-    branche: "Genossenschaft",
-    strasse: "Genossenschaftsweg 1",
-    nat: "D",
-    plz: "84307",
-    ort: "Eggenfelden",
-    land: "Deutschland",
-    telefon1: "08721/55555",
-    telefon2: "08721/55556",
-    telefax: "08721/55557",
+    name2: "Goods and Services Cooperative",
+    industry: using_old_models ? nil : "Cooperative",
+    branche: using_old_models ? "Genossenschaft" : nil,
+    street: using_old_models ? nil : "Genossenschaftsweg 1",
+    strasse: using_old_models ? "Genossenschaftsweg 1" : nil,
+    country_code: using_old_models ? nil : "D",
+    nat: using_old_models ? "D" : nil,
+    postal_code: using_old_models ? nil : "84307",
+    plz: using_old_models ? "84307" : nil,
+    city: using_old_models ? nil : "Eggenfelden",
+    ort: using_old_models ? "Eggenfelden" : nil,
+    country: using_old_models ? nil : "Germany",
+    land: using_old_models ? "Deutschland" : nil,
+    phone1: using_old_models ? nil : "08721/55555",
+    telefon1: using_old_models ? "08721/55555" : nil,
+    phone2: using_old_models ? nil : "08721/55556",
+    telefon2: using_old_models ? "08721/55556" : nil,
+    fax: using_old_models ? nil : "08721/55557",
+    telefax: using_old_models ? "08721/55557" : nil,
     email: "kontakt@rottal-eg.de",
-    homepage: "www.rottal-eg.de",
-    art: "K"
+    website: using_old_models ? nil : "www.rottal-eg.de",
+    homepage: using_old_models ? "www.rottal-eg.de" : nil,
+    address_type: using_old_models ? nil : "K",
+    art: using_old_models ? "K" : nil,
+    nummer: using_old_models ? 1003 : nil
   },
   {
-    nummer: 1004,
-    name1: "Futtermittel Weber GmbH",
-    name2: "Großhandel",
-    branche: "Futtermittelhandel",
-    strasse: "Industriestraße 12",
-    nat: "D",
-    plz: "94474",
-    ort: "Vilshofen",
-    land: "Deutschland",
-    telefon1: "08541/77777",
+    name1: "Weber Feed GmbH",
+    name2: "Wholesale",
+    industry: using_old_models ? nil : "Feed Trading",
+    branche: using_old_models ? "Futtermittelhandel" : nil,
+    street: using_old_models ? nil : "Industriestraße 12",
+    strasse: using_old_models ? "Industriestraße 12" : nil,
+    country_code: using_old_models ? nil : "D",
+    nat: using_old_models ? "D" : nil,
+    postal_code: using_old_models ? nil : "94474",
+    plz: using_old_models ? "94474" : nil,
+    city: using_old_models ? nil : "Vilshofen",
+    ort: using_old_models ? "Vilshofen" : nil,
+    country: using_old_models ? nil : "Germany",
+    land: using_old_models ? "Deutschland" : nil,
+    phone1: using_old_models ? nil : "08541/77777",
+    telefon1: using_old_models ? "08541/77777" : nil,
     email: "weber@futtermittel.de",
-    art: "L"
+    address_type: using_old_models ? nil : "L",
+    art: using_old_models ? "L" : nil,
+    nummer: using_old_models ? 1004 : nil
   },
   {
-    nummer: 1005,
-    name1: "Spedition Huber",
-    name2: "Logistik & Transport",
-    branche: "Spedition",
-    strasse: "Logistikpark 5",
-    nat: "D",
-    plz: "94032",
-    ort: "Passau",
-    land: "Deutschland",
-    telefon1: "0851/123456",
+    name1: "Huber Logistics",
+    name2: "Logistics & Transport",
+    industry: using_old_models ? nil : "Transportation",
+    branche: using_old_models ? "Spedition" : nil,
+    street: using_old_models ? nil : "Logistikpark 5",
+    strasse: using_old_models ? "Logistikpark 5" : nil,
+    country_code: using_old_models ? nil : "D",
+    nat: using_old_models ? "D" : nil,
+    postal_code: using_old_models ? nil : "94032",
+    plz: using_old_models ? "94032" : nil,
+    city: using_old_models ? nil : "Passau",
+    ort: using_old_models ? "Passau" : nil,
+    country: using_old_models ? nil : "Germany",
+    land: using_old_models ? "Deutschland" : nil,
+    phone1: using_old_models ? nil : "0851/123456",
+    telefon1: using_old_models ? "0851/123456" : nil,
     email: "huber@spedition.de",
-    art: "S"
+    address_type: using_old_models ? nil : "S",
+    art: using_old_models ? "S" : nil,
+    nummer: using_old_models ? 1005 : nil
   }
 ]
 
-adressen.each do |adresse_data|
-  safe_data = safe_attributes(Adresse, adresse_data)
-  Adresse.create!(safe_data)
+created_addresses = []
+addresses.each do |address_data|
+  safe_data = safe_attributes(Address, address_data)
+  address = Address.create!(safe_data)
+  created_addresses << address
 end
 
-puts "✅ #{Adresse.count} Adressen erstellt"
+puts "✅ #{Address.count} Addresses created"
 
-# 2. KUNDEN erstellen
-puts "👥 Erstelle Kunden..."
+# 2. CREATE CUSTOMERS
+puts "👥 Creating Customers..."
 
-kunden = [
+customers_data = [
   {
-    kundennr: 10001,
-    kundgruppe: 1,
-    bundesland: 9, # Bayern
-    umsatzsteuer: "J",
-    gekuendigt: "N",
-    mitgliednr: 12345,
-    datumeintritt: 1.year.ago,
-    bonusberecht: "J",
-    rabatt: 2.5,
-    zahlungart: "1",
-    geaendertam: Time.current
+    customer_group: 1,
+    state: 9, # Bavaria
+    vat_liable: "J",
+    terminated: "N",
+    member_number: 12345,
+    entry_date: 1.year.ago.to_date,
+    discount_percent: 2.5,
+    payment_terms: "1",
+    address: created_addresses[0]
   },
   {
-    kundennr: 10002,
-    kundgruppe: 2,
-    bundesland: 9,
-    umsatzsteuer: "J",
-    gekuendigt: "N",
-    mitgliednr: 12346,
-    datumeintritt: 2.years.ago,
-    bonusberecht: "N",
-    rabatt: 1.5,
-    zahlungart: "2",
-    geaendertam: Time.current
+    customer_group: 2,
+    state: 9,
+    vat_liable: "J",
+    terminated: "N",
+    member_number: 12346,
+    entry_date: 2.years.ago.to_date,
+    discount_percent: 1.5,
+    payment_terms: "2",
+    address: created_addresses[1]
   },
   {
-    kundennr: 10003,
-    kundgruppe: 1,
-    bundesland: 9,
-    umsatzsteuer: "J",
-    gekuendigt: "N",
-    mitgliednr: 12347,
-    datumeintritt: 3.years.ago,
-    bonusberecht: "J",
-    rabatt: 3.0,
-    zahlungart: "1",
-    geaendertam: Time.current
+    customer_group: 1,
+    state: 9,
+    vat_liable: "J",
+    terminated: "N",
+    member_number: 12347,
+    entry_date: 3.years.ago.to_date,
+    discount_percent: 3.0,
+    payment_terms: "1",
+    address: created_addresses[2]
   }
 ]
 
-kunden.each do |kunde_data|
-  safe_data = safe_attributes(WwsKunde, kunde_data)
-  WwsKunde.create!(safe_data)
+created_customers = []
+customers_data.each do |customer_data|
+  safe_data = safe_attributes(Customer, customer_data)
+  customer = Customer.create!(safe_data)
+  created_customers << customer
 end
 
-puts "✅ #{WwsKunde.count} Kunden erstellt"
+puts "✅ #{Customer.count} Customers created"
 
-# 3. VERKAUFSAUFTRÄGE erstellen
-puts "📝 Erstelle Verkaufsaufträge..."
+# 3. CREATE SALES ORDERS
+puts "📝 Creating Sales Orders..."
 
-aufträge = [
+sales_orders_data = [
   {
-    vauftragnr: 100001,
-    datum: 1.week.ago,
-    bediener: "MEIER",
-    vertreter: "VT001",
-    kundennr: 10001,
-    kundadrnr: 1001,
-    rechnadrnr: 1001,
-    liefadrnr: 1001,
-    kundname: "Müller Agrar GmbH",
-    bestdatum: 1.week.ago,
-    bestnrkd: "BEST-2024-001",
-    auftstatus: "B",
-    erledigt: "N",
-    waehrcode: 1,
-    mwstkz: 1,
-    skonto1tg: 10,
-    skonto1pr: 2.0,
-    skonto2tg: 20,
-    skonto2pr: 1.0,
-    nettotg: 30,
-    zahlbedtext: "2% Skonto bei Zahlung binnen 10 Tagen",
-    lager: 1,
-    geplliefdatum: 1.day.from_now,
-    geaendertam: Time.current
+    order_date: 1.week.ago.to_date,
+    operator: "MEIER",
+    sales_rep: "VT001",
+    customer: created_customers[0],
+    customer_address: created_customers[0].address,
+    billing_address: created_customers[0].address,
+    shipping_address: created_customers[0].address,
+    customer_name: "Müller Agrar GmbH",
+    customer_order_number: "BEST-2024-001",
+    status: "B",
+    completed: false,
+    currency_code: 1,
+    vat_code: 1,
+    discount1_days: 10,
+    discount1_percent: 2.0,
+    discount2_days: 20,
+    discount2_percent: 1.0,
+    net_days: 30,
+    payment_terms_text: "2% discount within 10 days",
+    warehouse: 1,
+    planned_delivery_date: 1.day.from_now.to_date
   },
   {
-    vauftragnr: 100002,
-    datum: 3.days.ago,
-    bediener: "WEBER",
-    vertreter: "VT002",
-    kundennr: 10002,
-    kundadrnr: 1002,
-    rechnadrnr: 1002,
-    liefadrnr: 1002,
-    kundname: "Bauer Schmidt",
-    bestdatum: 3.days.ago,
-    bestnrkd: "BEST-2024-002",
-    auftstatus: "B",
-    erledigt: "N",
-    waehrcode: 1,
-    mwstkz: 1,
-    skonto1tg: 7,
-    skonto1pr: 2.0,
-    nettotg: 14,
-    zahlbedtext: "2% Skonto bei Zahlung binnen 7 Tagen",
-    lager: 1,
-    geplliefdatum: 2.days.from_now,
-    geaendertam: Time.current
+    order_date: 3.days.ago.to_date,
+    operator: "WEBER",
+    sales_rep: "VT002",
+    customer: created_customers[1],
+    customer_address: created_customers[1].address,
+    billing_address: created_customers[1].address,
+    shipping_address: created_customers[1].address,
+    customer_name: "Farmer Schmidt",
+    customer_order_number: "BEST-2024-002",
+    status: "B",
+    completed: false,
+    currency_code: 1,
+    vat_code: 1,
+    discount1_days: 7,
+    discount1_percent: 2.0,
+    net_days: 14,
+    payment_terms_text: "2% discount within 7 days",
+    warehouse: 1,
+    planned_delivery_date: 2.days.from_now.to_date
   },
   {
-    vauftragnr: 100003,
-    datum: 2.weeks.ago,
-    bediener: "HUBER",
-    vertreter: "VT001",
-    kundennr: 10003,
-    kundadrnr: 1003,
-    rechnadrnr: 1003,
-    liefadrnr: 1003,
-    kundname: "Genossenschaft Rottal eG",
-    bestdatum: 2.weeks.ago,
-    bestnrkd: "BEST-2024-003",
-    auftstatus: "E",
-    erledigt: "J",
-    waehrcode: 1,
-    mwstkz: 1,
-    skonto1tg: 10,
-    skonto1pr: 2.0,
-    skonto2tg: 20,
-    skonto2pr: 1.0,
-    nettotg: 30,
-    zahlbedtext: "2% Skonto bei Zahlung binnen 10 Tagen",
-    lager: 1,
-    geplliefdatum: 1.week.ago,
-    geaendertam: Time.current
+    order_date: 2.weeks.ago.to_date,
+    operator: "HUBER",
+    sales_rep: "VT001",
+    customer: created_customers[2],
+    customer_address: created_customers[2].address,
+    billing_address: created_customers[2].address,
+    shipping_address: created_customers[2].address,
+    customer_name: "Genossenschaft Rottal eG",
+    customer_order_number: "BEST-2024-003",
+    status: "E",
+    completed: true,
+    currency_code: 1,
+    vat_code: 1,
+    discount1_days: 10,
+    discount1_percent: 2.0,
+    discount2_days: 20,
+    discount2_percent: 1.0,
+    net_days: 30,
+    payment_terms_text: "2% discount within 10 days",
+    warehouse: 1,
+    planned_delivery_date: 1.week.ago.to_date
   }
 ]
 
-aufträge.each do |auftrag_data|
-  safe_data = safe_attributes(WwsVerkauf, auftrag_data)
-  WwsVerkauf.create!(safe_data)
+created_sales_orders = []
+sales_orders_data.each do |order_data|
+  safe_data = safe_attributes(SalesOrder, order_data)
+  order = SalesOrder.create!(safe_data)
+  created_sales_orders << order
 end
 
-puts "✅ #{WwsVerkauf.count} Verkaufsaufträge erstellt"
+puts "✅ #{SalesOrder.count} Sales Orders created"
 
-# 4. VERKAUFS-POSITIONEN erstellen
-puts "📋 Erstelle Verkaufs-Positionen..."
+# 4. CREATE SALES ORDER LINE ITEMS
+puts "📋 Creating Sales Order Line Items..."
 
-positionen = [
-  # Auftrag 100001 Positionen
+line_items_data = [
+  # Order 1 Items
   {
-    vauftragnr: 100001,
-    posnr: 10,
-    posart: "N",
-    artikelnr: "WEIZEN001",
-    bezeichn1: "Weizen Futterweizen",
-    bezeichn2: "Qualität A, 13% Protein",
-    menge: 25000.0,
-    einheit: "kg",
-    einhpreis: 0.28,
-    listpreis: 0.30,
-    rabatt: 5.0,
-    mwstsatz: 19.0,
-    netto: 6650.0,
-    mwst: 1263.5,
-    brutto: 7913.5,
-    lager: 1,
-    abteilung: 1,
-    gewicht: 1.0
+    sales_order_id: created_sales_orders[0].id,
+    position_number: 10,
+    position_type: "N",
+    article_number: "WEIZEN001",
+    description1: "Feed Wheat",
+    description2: "Quality A, 13% Protein",
+    quantity: 25000.0,
+    unit: "kg",
+    unit_price: 0.28,
+    list_price: 0.30,
+    discount_percent: 5.0,
+    vat_rate: 19.0,
+    net_amount: 6650.0,
+    vat_amount: 1263.5,
+    gross_amount: 7913.5,
+    warehouse: 1,
+    department: 1,
+    weight: 1.0
   },
   {
-    vauftragnr: 100001,
-    posnr: 20,
-    posart: "N",
-    artikelnr: "GERSTE001",
-    bezeichn1: "Gerste Braugerste",
-    bezeichn2: "2-zeilig, Sorte Scarlett",
-    menge: 15000.0,
-    einheit: "kg",
-    einhpreis: 0.32,
-    listpreis: 0.35,
-    rabatt: 8.0,
-    mwstsatz: 19.0,
-    netto: 4416.0,
-    mwst: 839.04,
-    brutto: 5255.04,
-    lager: 1,
-    abteilung: 2,
-    gewicht: 1.0
+    sales_order_id: created_sales_orders[0].id,
+    position_number: 20,
+    position_type: "N",
+    article_number: "GERSTE001",
+    description1: "Malting Barley",
+    description2: "2-row, Variety Scarlett",
+    quantity: 15000.0,
+    unit: "kg",
+    unit_price: 0.32,
+    list_price: 0.35,
+    discount_percent: 8.0,
+    vat_rate: 19.0,
+    net_amount: 4416.0,
+    vat_amount: 839.04,
+    gross_amount: 5255.04,
+    warehouse: 1,
+    department: 2,
+    weight: 1.0
   },
-  # Auftrag 100002 Positionen
+  # Order 2 Items
   {
-    vauftragnr: 100002,
-    posnr: 10,
-    posart: "N",
-    artikelnr: "FUTTER001",
-    bezeichn1: "Kraftfutter Milchvieh",
-    bezeichn2: "18% Protein, pelletiert",
-    menge: 5000.0,
-    einheit: "kg",
-    einhpreis: 0.45,
-    listpreis: 0.48,
-    rabatt: 6.0,
-    mwstsatz: 7.0,
-    netto: 2115.0,
-    mwst: 148.05,
-    brutto: 2263.05,
-    lager: 2,
-    abteilung: 3,
-    gewicht: 1.0
+    sales_order_id: created_sales_orders[1].id,
+    position_number: 10,
+    position_type: "N",
+    article_number: "FUTTER001",
+    description1: "Dairy Cow Feed",
+    description2: "18% Protein, pelleted",
+    quantity: 5000.0,
+    unit: "kg",
+    unit_price: 0.45,
+    list_price: 0.48,
+    discount_percent: 6.0,
+    vat_rate: 7.0,
+    net_amount: 2115.0,
+    vat_amount: 148.05,
+    gross_amount: 2263.05,
+    warehouse: 2,
+    department: 3,
+    weight: 1.0
   },
-  # Auftrag 100003 Positionen (bereits erledigt)
+  # Order 3 Items (completed)
   {
-    vauftragnr: 100003,
-    posnr: 10,
-    posart: "N",
-    artikelnr: "MAIS001",
-    bezeichn1: "Körnermais",
-    bezeichn2: "Feuchtigkeit 14%",
-    menge: 20000.0,
-    einheit: "kg",
-    einhpreis: 0.26,
-    listpreis: 0.28,
-    rabatt: 7.0,
-    mwstsatz: 19.0,
-    netto: 4836.0,
-    mwst: 918.84,
-    brutto: 5754.84,
-    lager: 1,
-    abteilung: 1,
-    gewicht: 1.0
+    sales_order_id: created_sales_orders[2].id,
+    position_number: 10,
+    position_type: "N",
+    article_number: "MAIS001",
+    description1: "Grain Corn",
+    description2: "14% Moisture",
+    quantity: 20000.0,
+    unit: "kg",
+    unit_price: 0.26,
+    list_price: 0.28,
+    discount_percent: 7.0,
+    vat_rate: 19.0,
+    net_amount: 4836.0,
+    vat_amount: 918.84,
+    gross_amount: 5754.84,
+    warehouse: 1,
+    department: 1,
+    weight: 1.0
   }
 ]
 
-positionen.each do |position_data|
-  safe_data = safe_attributes(WwsVerkaufPosition, position_data)
-  WwsVerkaufPosition.create!(safe_data)
+line_items_data.each do |item_data|
+  safe_data = safe_attributes(SalesOrderLineItem, item_data)
+  SalesOrderLineItem.create!(safe_data)
 end
 
-puts "✅ #{WwsVerkaufPosition.count} Verkaufs-Positionen erstellt"
+puts "✅ #{SalesOrderLineItem.count} Sales Order Line Items created"
 
-# 5. LIEFERSCHEINE erstellen
-puts "🚚 Erstelle Lieferscheine..."
+# 5. CREATE DELIVERY NOTES
+puts "🚚 Creating Delivery Notes..."
 
-lieferscheine = [
+delivery_notes_data = [
   {
-    liefschnr: 200001,
-    vauftragnr: 100003,
-    datum: 1.week.ago,
-    bediener: "HUBER",
-    vertreter: "VT001",
-    kundennr: 10003,
-    kundadrnr: 1003,
-    rechnadrnr: 1003,
-    liefadrnr: 1003,
-    kundname: "Genossenschaft Rottal eG",
-    selbstabholung: "N",
-    gedruckt: "J",
-    lager: 1,
-    spediteurnr: 5001,
-    fahrzeug: "AB-CD 1234",
-    ladedatum: 1.week.ago,
-    uhrzeit: "08:30"
+    delivery_date: 1.week.ago.to_date,
+    operator: "HUBER",
+    sales_rep: "VT001",
+    sales_order: created_sales_orders[2],
+    customer: created_customers[2],
+    customer_address: created_customers[2].address,
+    billing_address: created_customers[2].address,
+    shipping_address: created_customers[2].address,
+    customer_name: "Genossenschaft Rottal eG",
+    self_pickup: false,
+    printed: true,
+    warehouse: 1,
+    vehicle: "AB-CD 1234",
+    license_plate1: "AB-CD 1234",
+    time: "08:30",
+    net_amount: 4836.0,
+    gross_amount: 5754.84
   },
   {
-    liefschnr: 200002,
-    vauftragnr: 100001,
-    datum: 2.days.ago,
-    bediener: "MEIER",
-    vertreter: "VT001",
-    kundennr: 10001,
-    kundadrnr: 1001,
-    rechnadrnr: 1001,
-    liefadrnr: 1001,
-    kundname: "Müller Agrar GmbH",
-    selbstabholung: "J",
-    gedruckt: "J",
-    lager: 1,
-    ladedatum: 2.days.ago,
-    uhrzeit: "14:15"
+    delivery_date: 2.days.ago.to_date,
+    operator: "MEIER",
+    sales_rep: "VT001",
+    sales_order: created_sales_orders[0],
+    customer: created_customers[0],
+    customer_address: created_customers[0].address,
+    billing_address: created_customers[0].address,
+    shipping_address: created_customers[0].address,
+    customer_name: "Müller Agrar GmbH",
+    self_pickup: true,
+    printed: true,
+    warehouse: 1,
+    time: "14:15",
+    net_amount: 3325.0,
+    gross_amount: 3956.75
   }
 ]
 
-lieferscheine.each do |lieferschein_data|
-  safe_data = safe_attributes(WwsLieferschein, lieferschein_data)
-  WwsLieferschein.create!(safe_data)
+created_delivery_notes = []
+delivery_notes_data.each do |delivery_data|
+  safe_data = safe_attributes(DeliveryNote, delivery_data)
+  delivery_note = DeliveryNote.create!(safe_data)
+  created_delivery_notes << delivery_note
 end
 
-puts "✅ #{WwsLieferschein.count} Lieferscheine erstellt"
+puts "✅ #{DeliveryNote.count} Delivery Notes created"
 
-# 6. LIEFERSCHEIN-POSITIONEN erstellen
-puts "📦 Erstelle Lieferschein-Positionen..."
+# 6. CREATE DELIVERY NOTE LINE ITEMS
+puts "📦 Creating Delivery Note Line Items..."
 
-lieferpositionen = [
-  # Lieferschein 200001 (Auftrag 100003)
+delivery_line_items_data = [
+  # Delivery Note 1 (Order 3)
   {
-    liefschnr: 200001,
-    posnr: 10,
-    vauftragnr: 100003,
-    vauftragposnr: 10,
-    artikelnr: "MAIS001",
-    bezeichn1: "Körnermais",
-    bezeichn2: "Feuchtigkeit 14%",
-    liefmenge: 20000.0,
-    einheit: "kg",
-    einhpreis: 0.26,
-    rabatt: 7.0,
-    mwstsatz: 19.0,
-    netto: 4836.0,
-    mwst: 918.84,
-    brutto: 5754.84,
-    gewicht: 1.0,
-    lager: 1,
-    abteilung: 1,
-    chargennr: 2024001
+    delivery_note_id: created_delivery_notes[0].id,
+    position_number: 10,
+    sales_order_id: created_sales_orders[2].id,
+    sales_order_position_number: 10,
+    article_number: "MAIS001",
+    description1: "Grain Corn",
+    description2: "14% Moisture",
+    delivered_quantity: 20000.0,
+    unit: "kg",
+    unit_price: 0.26,
+    discount_percent: 7.0,
+    vat_rate: 19.0,
+    net_amount: 4836.0,
+    vat_amount: 918.84,
+    gross_amount: 5754.84,
+    weight: 1.0,
+    warehouse: 1,
+    department: 1
   },
-  # Lieferschein 200002 (Auftrag 100001) - Teillieferung
+  # Delivery Note 2 (Order 1) - Partial delivery
   {
-    liefschnr: 200002,
-    posnr: 10,
-    vauftragnr: 100001,
-    vauftragposnr: 10,
-    artikelnr: "WEIZEN001",
-    bezeichn1: "Weizen Futterweizen",
-    bezeichn2: "Qualität A, 13% Protein",
-    liefmenge: 12500.0,  # Nur die Hälfte geliefert
-    einheit: "kg",
-    einhpreis: 0.28,
-    rabatt: 5.0,
-    mwstsatz: 19.0,
-    netto: 3325.0,
-    mwst: 631.75,
-    brutto: 3956.75,
-    gewicht: 1.0,
-    lager: 1,
-    abteilung: 1,
-    chargennr: 2024002
+    delivery_note_id: created_delivery_notes[1].id,
+    position_number: 10,
+    sales_order_id: created_sales_orders[0].id,
+    sales_order_position_number: 10,
+    article_number: "WEIZEN001",
+    description1: "Feed Wheat",
+    description2: "Quality A, 13% Protein",
+    delivered_quantity: 12500.0,  # Only half delivered
+    unit: "kg",
+    unit_price: 0.28,
+    discount_percent: 5.0,
+    vat_rate: 19.0,
+    net_amount: 3325.0,
+    vat_amount: 631.75,
+    gross_amount: 3956.75,
+    weight: 1.0,
+    warehouse: 1,
+    department: 1
   }
 ]
 
-lieferpositionen.each do |position_data|
-  safe_data = safe_attributes(WwsLieferscheinPosition, position_data)
-  WwsLieferscheinPosition.create!(safe_data)
+delivery_line_items_data.each do |item_data|
+  safe_data = safe_attributes(DeliveryNoteLineItem, item_data)
+  DeliveryNoteLineItem.create!(safe_data)
 end
 
-puts "✅ #{WwsLieferscheinPosition.count} Lieferschein-Positionen erstellt"
+puts "✅ #{DeliveryNoteLineItem.count} Delivery Note Line Items created"
 
-# 7. WIEGESCHEINE erstellen
-puts "⚖️ Erstelle Wiegescheine..."
+# 7. CREATE WEIGHING SLIPS
+puts "⚖️ Creating Weighing Slips..."
 
-wiegescheine = [
+weighing_slips_data = [
   {
-    id: 1,
-    dbid: 1,
-    wiegescheinnr: 300001,
-    datum: 1.week.ago,
-    uhrzeit: "08:45",
-    bediener: "WAG1",  # Verkürzt von "WAAGE1"
-    kundliefnr: 10003,
-    artikelnr: "MAIS001",
-    bezeichn1: "Körnermais",
-    bezeichn2: "Feuchtigkeit 14%",
-    kfz_kennzeichen: "AB-CD 1234",
-    wiegungdatum1: 1.week.ago.change(hour: 8, min: 30),
-    wiegungdatum2: 1.week.ago.change(hour: 9, min: 15),
-    wiegunguhrzeit1: "08:30",
-    wiegunguhrzeit2: "09:15",
-    wiegungnetto1: 18500.0,  # Leergewicht
-    wiegungnetto2: 38750.0,  # Vollgewicht
-    gewicht: 20250.0,        # Nettogewicht
-    preis: 0.26,
-    menge: 20250.0,
-    erledigt: "J",
-    status: 1,
-    lager: 1,
-    abteilung: 1,
-    chargennr: 2024001,
-    auftragnr: 100003,
-    liefliefschnr: "200001",
-    liefadrnr: 1003,
-    geaendertam: Time.current
+    database_id: 1,
+    weighing_slip_number: 300001,
+    weighing_date: 1.week.ago.to_date,
+    time: "08:45",
+    operator: "WAG1",
+    customer: created_customers[2],
+    article_number: "MAIS001",
+    description1: "Grain Corn",
+    description2: "14% Moisture",
+    vehicle_registration: "AB-CD 1234",
+    first_weighing_time: 1.week.ago.change(hour: 8, min: 30),
+    second_weighing_time: 1.week.ago.change(hour: 9, min: 15),
+    first_weight: 18500.0,  # Empty weight
+    second_weight: 38750.0, # Full weight
+    net_weight: 20250.0,    # Net weight
+    total_weight: 20250.0,
+    price: 0.26,
+    completed: true,
+    sales_order: created_sales_orders[2],
+    delivery_note: created_delivery_notes[0],
+    shipping_address: created_customers[2].address
   },
   {
-    id: 2,
-    dbid: 1,
-    wiegescheinnr: 300002,
-    datum: 2.days.ago,
-    uhrzeit: "14:30",
-    bediener: "WAG1",  # Verkürzt
-    kundliefnr: 10001,
-    artikelnr: "WEIZEN001",
-    bezeichn1: "Weizen Futterweizen",
-    bezeichn2: "Qualität A, 13% Protein",
-    kfz_kennzeichen: "EF-GH 5678",
-    wiegungdatum1: 2.days.ago.change(hour: 14, min: 15),
-    wiegungdatum2: 2.days.ago.change(hour: 14, min: 45),
-    wiegunguhrzeit1: "14:15",
-    wiegunguhrzeit2: "14:45",
-    wiegungnetto1: 16800.0,  # Leergewicht
-    wiegungnetto2: 29380.0,  # Vollgewicht
-    gewicht: 12580.0,        # Nettogewicht
-    preis: 0.28,
-    menge: 12580.0,
-    erledigt: "J",
-    status: 1,
-    lager: 1,
-    abteilung: 1,
-    chargennr: 2024002,
-    auftragnr: 100001,
-    liefliefschnr: "200002",
-    liefadrnr: 1001,
-    geaendertam: Time.current
+    database_id: 1,
+    weighing_slip_number: 300002,
+    weighing_date: 2.days.ago.to_date,
+    time: "14:30",
+    operator: "WAG1",
+    customer: created_customers[0],
+    article_number: "WEIZEN001",
+    description1: "Feed Wheat",
+    description2: "Quality A, 13% Protein",
+    vehicle_registration: "EF-GH 5678",
+    first_weighing_time: 2.days.ago.change(hour: 14, min: 15),
+    second_weighing_time: 2.days.ago.change(hour: 14, min: 45),
+    first_weight: 16800.0,  # Empty weight
+    second_weight: 29380.0, # Full weight
+    net_weight: 12580.0,    # Net weight
+    total_weight: 12580.0,
+    price: 0.28,
+    completed: true,
+    sales_order: created_sales_orders[0],
+    delivery_note: created_delivery_notes[1],
+    shipping_address: created_customers[0].address
   },
   {
-    id: 3,
-    dbid: 1,
-    wiegescheinnr: 300003,
-    datum: Date.current,
-    uhrzeit: "10:15",
-    bediener: "WAG2",  # Verkürzt
-    kundliefnr: 10002,
-    artikelnr: "FUTTER001",
-    bezeichn1: "Kraftfutter Milchvieh",
-    bezeichn2: "18% Protein, pelletiert",
-    kfz_kennzeichen: "IJ-KL 9012",
-    wiegungdatum1: Date.current.beginning_of_day + 10.hours,
-    wiegungnetto1: 12200.0,  # Nur erste Wiegung
-    gewicht: nil,            # Noch nicht fertig gewogen
-    preis: 0.45,
-    erledigt: "N",
-    status: 0,
-    lager: 2,
-    abteilung: 3,
-    auftragnr: 100002,
-    liefadrnr: 1002,
-    geaendertam: Time.current
+    database_id: 1,
+    weighing_slip_number: 300003,
+    weighing_date: Date.current,
+    time: "10:15",
+    operator: "WAG2",
+    customer: created_customers[1],
+    article_number: "FUTTER001",
+    description1: "Dairy Cow Feed",
+    description2: "18% Protein, pelleted",
+    vehicle_registration: "IJ-KL 9012",
+    first_weighing_time: Date.current.beginning_of_day + 10.hours,
+    first_weight: 12200.0,  # Only first weighing
+    total_weight: nil,      # Not finished weighing
+    price: 0.45,
+    completed: false,
+    sales_order: created_sales_orders[1],
+    shipping_address: created_customers[1].address
   }
 ]
 
-wiegescheine.each do |wiegeschein_data|
-  safe_data = safe_attributes(WwsWiegeschein, wiegeschein_data)
-  WwsWiegeschein.create!(safe_data)
+weighing_slips_data.each do |slip_data|
+  safe_data = safe_attributes(WeighingSlip, slip_data)
+  WeighingSlip.create!(safe_data)
 end
 
-puts "✅ #{WwsWiegeschein.count} Wiegescheine erstellt"
+puts "✅ #{WeighingSlip.count} Weighing Slips created"
 
-# Zusammenfassung
-puts "\n🎉 Seed-Daten erfolgreich erstellt!"
+# Summary
+puts "\n🎉 Seed data successfully created!"
 puts "=" * 50
 
 counts = []
-counts << "📍 Adressen: #{Adresse.count}" if ActiveRecord::Base.connection.table_exists?('adressen')
-counts << "👥 Kunden: #{WwsKunde.count}" if ActiveRecord::Base.connection.table_exists?('wws_kunden')
-counts << "📝 Verkaufsaufträge: #{WwsVerkauf.count}" if ActiveRecord::Base.connection.table_exists?('wws_verkauf1')
-counts << "📋 Verkaufs-Positionen: #{WwsVerkaufPosition.count}" if ActiveRecord::Base.connection.table_exists?('wws_verkauf2')
-counts << "🚚 Lieferscheine: #{WwsLieferschein.count}" if ActiveRecord::Base.connection.table_exists?('wws_vliefer1')
-counts << "📦 Lieferschein-Positionen: #{WwsLieferscheinPosition.count}" if ActiveRecord::Base.connection.table_exists?('wws_vliefer2')
-counts << "⚖️ Wiegescheine: #{WwsWiegeschein.count}" if ActiveRecord::Base.connection.table_exists?('wws_wiegeschein')
+counts << "📍 Addresses: #{Address.count}" if ActiveRecord::Base.connection.table_exists?('addresses')
+counts << "👥 Customers: #{Customer.count}" if ActiveRecord::Base.connection.table_exists?('customers')
+counts << "📝 Sales Orders: #{SalesOrder.count}" if ActiveRecord::Base.connection.table_exists?('sales_orders')
+counts << "📋 Sales Order Items: #{SalesOrderLineItem.count}" if ActiveRecord::Base.connection.table_exists?('sales_order_line_items')
+counts << "🚚 Delivery Notes: #{DeliveryNote.count}" if ActiveRecord::Base.connection.table_exists?('delivery_notes')
+counts << "📦 Delivery Items: #{DeliveryNoteLineItem.count}" if ActiveRecord::Base.connection.table_exists?('delivery_note_line_items')
+counts << "⚖️ Weighing Slips: #{WeighingSlip.count}" if ActiveRecord::Base.connection.table_exists?('weighing_slips')
 
 counts.each { |count| puts count }
 puts "=" * 50
 
-# Beispiel-Abfragen demonstrieren
-puts "\n🔍 Beispiel-Abfragen:"
-puts "Aktive Kunden: #{WwsKunde.aktiv.count}" if ActiveRecord::Base.connection.table_exists?('wws_kunden')
-puts "Offene Aufträge: #{WwsVerkauf.offen.count}" if ActiveRecord::Base.connection.table_exists?('wws_verkauf1')
-puts "Erledigte Wiegescheine: #{WwsWiegeschein.erledigt.count}" if ActiveRecord::Base.connection.table_exists?('wws_wiegeschein')
+# Example queries demonstration
+puts "\n🔍 Example Queries:"
+puts "Active Customers: #{Customer.active.count}" if ActiveRecord::Base.connection.table_exists?('customers')
+puts "Open Orders: #{SalesOrder.open.count}" if ActiveRecord::Base.connection.table_exists?('sales_orders')
+puts "Completed Weighing Slips: #{WeighingSlip.completed.count}" if ActiveRecord::Base.connection.table_exists?('weighing_slips')
 
-# Geschäftsdaten-Übersicht
-if ActiveRecord::Base.connection.table_exists?('wws_verkauf1') && ActiveRecord::Base.connection.table_exists?('wws_verkauf2')
+# Business data overview
+if ActiveRecord::Base.connection.table_exists?('sales_orders') && ActiveRecord::Base.connection.table_exists?('sales_order_line_items')
   begin
-    gesamtumsatz = WwsVerkauf.joins(:positionen).sum('wws_verkauf2.brutto')
-    puts "Gesamtumsatz Aufträge: #{gesamtumsatz.round(2)} €"
+    total_revenue = SalesOrder.joins(:line_items).sum('sales_order_line_items.gross_amount')
+    puts "Total Order Revenue: €#{total_revenue.round(2)}"
   rescue => e
-    puts "Gesamtumsatz konnte nicht berechnet werden: #{e.message}"
+    puts "Total revenue could not be calculated: #{e.message}"
   end
 end
 
-puts "\n✨ Seeds abgeschlossen!"
+puts "\n✨ Seeds completed!"
