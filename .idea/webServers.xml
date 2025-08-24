@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c55c83d4-4f27-4372-ba83-8c622e043617" name="Metz-wws">
+        <fileTransfer rootFolder="/home" accessType="SFTP" host="91.98.25.116" port="22" sshConfigId="e539dfd7-fe2d-4b63-b70e-8d66e03de348" sshConfig="root@91.98.25.116:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
