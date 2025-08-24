@@ -2,8 +2,8 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t wws_metz .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name wws_metz wws_metz
+# docker build -t metz_wws .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name metz_wws metz_wws
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 

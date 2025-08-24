@@ -1,0 +1,79 @@
+/* ====================================
+   1. CSS VARIABLEN & ROOT
+   ==================================== */
+:root {
+  /* Metz Gelb-Palette */
+  --metz-yellow: hsl(50, 96%, 57%);
+  --metz-yellow-light: hsl(50, 96%, 67%);
+  --metz-yellow-dark: hsl(50, 96%, 47%);
+  --metz-yellow-pale: hsl(50, 96%, 87%);
+  --metz-yellow-ultra-pale: hsl(50, 96%, 95%);
+
+  /* Basis-Farben */
+  //--bg: #f8f8f8;
+  --bg: linear-gradient(135deg, #fffef0 0%, hsl(50, 96%, 97%) 100%);
+  --panel: linear-gradient(135deg, #ffffff 0%, hsl(50, 50%, 98%) 100%);
+  --soft: linear-gradient(135deg, hsl(50, 96%, 95%) 0%, hsl(50, 96%, 92%) 100%);
+  --border: hsl(50, 96%, 47%);
+  --divider: hsl(50, 96%, 77%);
+
+  /* Header & Sidebar */
+  --ribbon-top: hsl(50, 96%, 67%);
+  --ribbon-bot: hsl(50, 96%, 57%);
+  --sidebar: linear-gradient(180deg, hsl(50, 96%, 90%) 0%, hsl(50, 96%, 95%) 100%);
+
+  /* Text & Akzente */
+  --text: #5d4e37;
+  --muted: #8b7355;
+  --accent: hsl(50, 96%, 57%);
+  --accent-2: hsl(50, 96%, 67%);
+
+  /* Status-Farben */
+  --success: #64ae3c;
+  --warning: #e67e22;
+  --danger: #e74c3c;
+  --info: #f39c12;
+
+  /* Gradienten */
+  --gradient-primary: linear-gradient(135deg, hsl(50, 96%, 67%) 0%, hsl(50, 96%, 57%) 100%);
+  --gradient-success: linear-gradient(135deg, #58d68d 0%, #55962d 100%);
+  --gradient-warning: linear-gradient(135deg, hsl(50, 96%, 77%) 0%, #e67e22 100%);
+  --gradient-info: linear-gradient(135deg, hsl(50, 96%, 67%) 0%, #f39c12 100%);
+
+  /* Sonstige */
+  --radius: 8px;
+
+
+
+
+// Typography
+  --font-family-primary: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
+  --font-family-secondary: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+
+  // Spacing
+  --gap-small: 0.5rem;
+  --gap: 1rem;
+  --gap-large: 1.5rem;
+
+  // Container
+  --max-width: 90rem;
+
+  // Spacing Scale
+  --space-0: 0;
+  --space-0_5: 0.5rem;
+  --space-1: 1rem;
+  --space-2: 2rem;
+  --space-3: 3rem;
+  --space-4: 4rem;
+  --space-5: 5rem;
+}

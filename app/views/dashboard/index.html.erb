@@ -1,14 +1,14 @@
 <div class="dashboard-header">
   <h1 class="page-title">Dashboard</h1>
   <div class="dashboard-actions">
-    <button class="btn" data-action="click->style#exportData">Exportieren</button>
-    <button class="btn btn-primary" data-action="click->style#createNewEntry">Neuer Eintrag</button>
+    <button class="btn" data-action="click->layout#exportData">Exportieren</button>
+    <button class="btn btn-primary" data-action="click->layout#createNewEntry">Neuer Eintrag</button>
   </div>
 </div>
 
 <!-- KPI Cards -->
 <div class="kpi-grid">
-  <div class="kpi-card" data-style-target="kpiCard">
+  <div class="kpi-card" data-layout-target="kpiCard">
     <div class="kpi-header">
       <div class="kpi-title">Gesamtumsatz</div>
       <div class="kpi-icon">
@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div class="kpi-card success" data-style-target="kpiCard">
+  <div class="kpi-card success" data-layout-target="kpiCard">
     <div class="kpi-header">
       <div class="kpi-title">Aktive Projekte</div>
       <div class="kpi-icon">
@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <div class="kpi-card warning" data-style-target="kpiCard">
+  <div class="kpi-card warning" data-layout-target="kpiCard">
     <div class="kpi-header">
       <div class="kpi-title">Offene Rechnungen</div>
       <div class="kpi-icon">
@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <div class="kpi-card info" data-style-target="kpiCard">
+  <div class="kpi-card info" data-layout-target="kpiCard">
     <div class="kpi-header">
       <div class="kpi-title">Neue Kunden</div>
       <div class="kpi-icon">
@@ -106,9 +106,9 @@
   <div class="dashboard-section">
     <div class="section-header">
       <h3 class="section-title">Letzte Aktivitäten</h3>
-      <button class="btn" style="font-size: 12px; padding: 4px 8px;">
+      <button class="btn btn-live">
         Live
-        <div data-style-target="liveIndicator" style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite;"></div>
+        <div data-layout-target="liveIndicator" class="live-indicator"></div>
       </button>
     </div>
     <div class="section-body">
@@ -120,28 +120,28 @@
         </div>
       </div>
       <div class="activity-item">
-        <div class="activity-dot" style="background: var(--success);"></div>
+        <div class="activity-dot activity-dot-success"></div>
         <div class="activity-content">
           <div class="activity-title">Projekt abgeschlossen</div>
           <div class="activity-meta">Website-Relaunch • vor 1 Tag</div>
         </div>
       </div>
       <div class="activity-item">
-        <div class="activity-dot" style="background: var(--info);"></div>
+        <div class="activity-dot activity-dot-info"></div>
         <div class="activity-content">
           <div class="activity-title">Neuer Kunde</div>
           <div class="activity-meta">TechStart GmbH • vor 2 Tagen</div>
         </div>
       </div>
       <div class="activity-item">
-        <div class="activity-dot" style="background: var(--success);"></div>
+        <div class="activity-dot activity-dot-success"></div>
         <div class="activity-content">
           <div class="activity-title">Zahlung eingegangen</div>
           <div class="activity-meta">€ 2.450 • Innovate AG • vor 3 Tagen</div>
         </div>
       </div>
       <div class="activity-item">
-        <div class="activity-dot" style="background: var(--warning);"></div>
+        <div class="activity-dot activity-dot-warning"></div>
         <div class="activity-content">
           <div class="activity-title">Mahnung versendet</div>
           <div class="activity-meta">Global Ltd. • vor 4 Tagen</div>
@@ -155,9 +155,9 @@
 <div class="dashboard-section">
   <div class="section-header">
     <h3 class="section-title">Aktuelle Aufträge</h3>
-    <button class="btn btn-primary" data-action="click->style#createNewOrder">Neuer Auftrag</button>
+    <button class="btn btn-primary" data-action="click->layout#createNewOrder">Neuer Auftrag</button>
   </div>
-  <div class="section-body" style="padding: 0;">
+  <div class="section-body section-body-table">
     <table class="data-table">
       <thead>
       <tr>
@@ -171,7 +171,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr data-style-target="tableRow" data-action="click->style#selectTableRow">
+      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
         <td><strong>A-2024-001</strong></td>
         <td>Hightech GmbH Osnabrück</td>
         <td>CRM System Implementation</td>
@@ -180,7 +180,7 @@
         <td>15.03.2024</td>
         <td>M. Schmidt</td>
       </tr>
-      <tr data-style-target="tableRow" data-action="click->style#selectTableRow">
+      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
         <td><strong>A-2024-002</strong></td>
         <td>Innovate AG Hamburg</td>
         <td>Mobile App Development</td>
@@ -189,7 +189,7 @@
         <td>22.03.2024</td>
         <td>A. Müller</td>
       </tr>
-      <tr data-style-target="tableRow" data-action="click->style#selectTableRow">
+      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
         <td><strong>A-2024-003</strong></td>
         <td>StartUp Co. Berlin</td>
         <td>Corporate Website</td>
@@ -198,7 +198,7 @@
         <td>10.04.2024</td>
         <td>L. Weber</td>
       </tr>
-      <tr data-style-target="tableRow" data-action="click->style#selectTableRow">
+      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
         <td><strong>A-2024-004</strong></td>
         <td>Global Ltd. München</td>
         <td>E-Commerce Platform</td>
@@ -207,7 +207,7 @@
         <td>05.03.2024</td>
         <td>T. Fischer</td>
       </tr>
-      <tr data-style-target="tableRow" data-action="click->style#selectTableRow">
+      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
         <td><strong>A-2024-005</strong></td>
         <td>Regional Bank AG</td>
         <td>Security Audit</td>
@@ -222,29 +222,29 @@
 </div>
 
 <!-- Additional Dashboard Row -->
-<div class="dashboard-grid" style="margin-top: 20px;">
+<div class="dashboard-grid dashboard-grid-additional">
   <!-- Quick Stats -->
   <div class="dashboard-section">
     <div class="section-header">
       <h3 class="section-title">Monatsstatistiken</h3>
     </div>
     <div class="section-body">
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-        <div style="text-align: center; padding: 20px; background: rgba(102, 126, 234, 0.05); border-radius: 8px;">
-          <div style="font-size: 24px; font-weight: 700; color: var(--accent); margin-bottom: 8px;">47</div>
-          <div style="font-size: 13px; color: var(--muted);">Abgeschlossene Projekte</div>
+      <div class="stats-grid">
+        <div class="stat-card stat-card-accent">
+          <div class="stat-value">47</div>
+          <div class="stat-label">Abgeschlossene Projekte</div>
         </div>
-        <div style="text-align: center; padding: 20px; background: rgba(46, 139, 87, 0.05); border-radius: 8px;">
-          <div style="font-size: 24px; font-weight: 700; color: var(--success); margin-bottom: 8px;">98%</div>
-          <div style="font-size: 13px; color: var(--muted);">Kundenzufriedenheit</div>
+        <div class="stat-card stat-card-success">
+          <div class="stat-value">98%</div>
+          <div class="stat-label">Kundenzufriedenheit</div>
         </div>
-        <div style="text-align: center; padding: 20px; background: rgba(217, 119, 6, 0.05); border-radius: 8px;">
-          <div style="font-size: 24px; font-weight: 700; color: var(--warning); margin-bottom: 8px;">12</div>
-          <div style="font-size: 13px; color: var(--muted);">Offene Angebote</div>
+        <div class="stat-card stat-card-warning">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Offene Angebote</div>
         </div>
-        <div style="text-align: center; padding: 20px; background: rgba(14, 165, 233, 0.05); border-radius: 8px;">
-          <div style="font-size: 24px; font-weight: 700; color: var(--info); margin-bottom: 8px;">156h</div>
-          <div style="font-size: 13px; color: var(--muted);">Arbeitsstunden</div>
+        <div class="stat-card stat-card-info">
+          <div class="stat-value">156h</div>
+          <div class="stat-label">Arbeitsstunden</div>
         </div>
       </div>
     </div>
@@ -256,46 +256,46 @@
       <h3 class="section-title">Team Status</h3>
     </div>
     <div class="section-body">
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 32px; height: 32px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600;">MS</div>
-            <div>
-              <div style="font-weight: 500;">Max Schmidt</div>
-              <div style="font-size: 12px; color: var(--muted);">Senior Developer</div>
+      <div class="team-list">
+        <div class="team-member">
+          <div class="team-member-info">
+            <div class="team-avatar team-avatar-success">MS</div>
+            <div class="team-details">
+              <div class="team-name">Max Schmidt</div>
+              <div class="team-role">Senior Developer</div>
             </div>
           </div>
-          <span style="color: var(--success); font-size: 12px;">● Verfügbar</span>
+          <span class="status-indicator status-available">● Verfügbar</span>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 32px; height: 32px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600;">AM</div>
-            <div>
-              <div style="font-weight: 500;">Anna Müller</div>
-              <div style="font-size: 12px; color: var(--muted);">UI/UX Designer</div>
+        <div class="team-member">
+          <div class="team-member-info">
+            <div class="team-avatar team-avatar-accent">AM</div>
+            <div class="team-details">
+              <div class="team-name">Anna Müller</div>
+              <div class="team-role">UI/UX Designer</div>
             </div>
           </div>
-          <span style="color: var(--warning); font-size: 12px;">● Im Meeting</span>
+          <span class="status-indicator status-busy">● Im Meeting</span>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 32px; height: 32px; background: var(--info); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600;">LW</div>
-            <div>
-              <div style="font-weight: 500;">Lisa Weber</div>
-              <div style="font-size: 12px; color: var(--muted);">Project Manager</div>
+        <div class="team-member">
+          <div class="team-member-info">
+            <div class="team-avatar team-avatar-info">LW</div>
+            <div class="team-details">
+              <div class="team-name">Lisa Weber</div>
+              <div class="team-role">Project Manager</div>
             </div>
           </div>
-          <span style="color: var(--success); font-size: 12px;">● Verfügbar</span>
+          <span class="status-indicator status-available">● Verfügbar</span>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 32px; height: 32px; background: var(--muted); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600;">TF</div>
-            <div>
-              <div style="font-weight: 500;">Tom Fischer</div>
-              <div style="font-size: 12px; color: var(--muted);">Backend Developer</div>
+        <div class="team-member">
+          <div class="team-member-info">
+            <div class="team-avatar team-avatar-muted">TF</div>
+            <div class="team-details">
+              <div class="team-name">Tom Fischer</div>
+              <div class="team-role">Backend Developer</div>
             </div>
           </div>
-          <span style="color: var(--muted); font-size: 12px;">● Offline</span>
+          <span class="status-indicator status-offline">● Offline</span>
         </div>
       </div>
     </div>

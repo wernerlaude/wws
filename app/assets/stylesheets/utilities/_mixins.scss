@@ -1,0 +1,63 @@
+// _mixins.scss
+@mixin typography-base {
+  font-family: var(--font-family-primary), sans-serif;
+  color: var(--theme-heading);
+  line-height: var(--line-height-tight);
+  margin: 0;
+  font-weight: var(--font-weight-normal);
+}
+
+// Responsive Font Size Mixin
+@mixin responsive-font-size($mobile, $tablet: null, $desktop: null) {
+  font-size: $mobile;
+
+  @if $tablet {
+    @media (min-width: 768px) {
+      font-size: $tablet;
+    }
+  }
+
+  @if $desktop {
+    @media (min-width: 1024px) {
+      font-size: $desktop;
+    }
+  }
+}
+
+// Form Input Mixins
+@mixin form-input-style {
+  padding: 0.5em 0.6em;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+@mixin form-input-focus {
+  outline: 0;
+  border-color: #129FEA;
+}
+
+@mixin form-input-disabled {
+  cursor: not-allowed;
+  background-color: #eaeded;
+  color: #cad2d3;
+}
+
+@mixin form-input-readonly {
+  background-color: #eee;
+  color: #777;
+  border-color: #ccc;
+}
+
+@mixin form-input-invalid {
+  color: #b94a48;
+  border-color: #e9322d;
+}
+
+@mixin form-stacked-block {
+  display: block;
+  margin: 0.25em 0;
+}

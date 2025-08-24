@@ -28,18 +28,12 @@ development:
     database: storage/development_cable
     migrations_paths: db/cable_migrate
 
-test:
-  <<: *default
-  username: wernerlaude
-  password: Taxi4343
-  database: dsipo_test
-
 production:
   primary:
     <<: *default
     host: 127.0.0.1
     port: 5432
-    database: dispo_production
+    database: wws_production
     username: metz
     password: WeLaLog!23$5
 

@@ -23,3 +23,19 @@
 #   # Report violations without enforcing the policy.
 #   # config.content_security_policy_report_only = true
 # end
+
+Rails.application.configure do
+  config.content_security_policy do |policy|
+    policy.default_src :self
+    policy.script_src  :self, :https      # KEIN 'unsafe-inline'
+    policy.style_src   :self, :https
+    policy.img_src     :self, :https, :data
+    policy.object_src  :none
+    policy.connect_src :self, :https
+  end
+
+  # Nonce einschalten (wichtig!)
+  config.content_security_policy_nonce_generator  = ->(_req) { SecureRandom.base64(16) }
+  config.content_security_policy_nonce_directives = %w(script-src)
+end
+

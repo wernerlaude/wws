@@ -41,5 +41,4 @@ group :test do
   gem "selenium-webdriver"
 end
 
-
 gem "sass-rails", "~> 6.0.0"

@@ -1,0 +1,93 @@
+.table-card {
+  background: var(--panel);
+  border: 1px solid var(--divider);
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft, 0 1px 3px rgba(0,0,0,.06));
+  overflow: hidden;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--divider);
+  background: linear-gradient(135deg, var(--metz-yellow-pale) 0%, var(--metz-yellow-ultra-pale) 100%);
+  //background: linear-gradient(#fff, hsl(50, 96%, 98%));
+}
+
+.table-toolbar .toolbar-left { display: flex; align-items: center; gap: 16px; }
+.table-toolbar h1 { margin: 0; font-size: 18px; }
+
+/* Dichte-Umschalter (Komfort/Kompakt) */
+.density-toggle {
+  display: inline-flex; border: 1px solid var(--divider); border-radius: 8px; overflow: hidden;
+}
+.density-toggle button {
+  background: #fff; border: 0; padding: 6px 10px; font-size: 12px; cursor: pointer;
+}
+.density-toggle button.is-active { background: var(--metz-yellow-pale); }
+
+/* Wrapper für horizontales Scrollen auf kleinen Screens */
+.table-wrapper { width: 100%; overflow-x: auto; }
+
+/* Bestehende .data-table erweitern */
+.data-table {
+  table-layout: auto;
+  white-space: nowrap; /* Header behalten Breite */
+}
+.data-table .truncate {
+  max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Sticky Header */
+.table-wrapper .data-table thead th {
+  position: sticky; top: 0; z-index: 1;
+}
+
+/* Zebra + Hover deutlicher machen */
+.data-table tbody tr:nth-child(even) { background: #fcfdff; }
+.data-table tbody tr:hover { background: linear-gradient(#fafcff, #f4f8ff); }
+
+/* Sortierbare Spalten (visuelles Cue) */
+.data-table thead th[data-sortable] {
+  cursor: pointer; user-select: none; position: relative; padding-right: 28px;
+}
+.data-table thead th[data-sortable]::after {
+  content: "⇅"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  opacity: .45; font-size: 12px;
+}
+.data-table thead th[data-sort="asc"]::after  { content: "↑"; opacity: .9; }
+.data-table thead th[data-sort="desc"]::after { content: "↓"; opacity: .9; }
+
+/* Numerische Spalten & Aktionsspalte */
+.data-table td.is-numeric, .data-table th.is-numeric { text-align: right; }
+.data-table td.is-actions, .data-table th.is-actions { text-align: right; width: 1%; white-space: nowrap; }
+
+/* Buttons in der Tabelle */
+.btn.btn-ghost {
+  background: transparent; border: 1px solid transparent; padding: 6px 8px; border-radius: 6px; font-size: 12px;
+}
+.btn.btn-ghost:hover { border-color: var(--divider); background: #fff; }
+.btn.btn-ghost.danger:hover { color: var(--danger); border-color: rgba(231,76,60,.35); }
+
+/* Empty State */
+.empty-state {
+  padding: 48px 24px; text-align: center; background: var(--panel);
+  border: 1px dashed var(--divider); border-radius: 12px;
+}
+.empty-state .empty-illustration {
+  width: 72px; height: 72px; margin: 0 auto 12px;
+  background: var(--soft); border: 1px solid var(--divider); border-radius: 16px;
+}
+
+/* Dichte-Modifier */
+.data-table.is-comfortable td, .data-table.is-comfortable th { padding: 12px 16px; }
+.data-table.is-compact td,     .data-table.is-compact th     { padding: 8px 12px;  font-size: 12px; }
+
+/* Responsive: unter 768px spalten zus. enger & Aktionen umbrechen */
+@media (max-width: 768px) {
+  .data-table .truncate { max-width: 160px; }
+  .data-table td.is-actions { white-space: normal; }
+}

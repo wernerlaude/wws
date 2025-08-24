@@ -1,0 +1,135 @@
+h1, h2, h3, h4, h5, h6 {
+  @include typography-base;
+  margin-bottom: 1rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--theme-heading);
+}
+
+h1 {
+  @include responsive-font-size(2rem, 2.5rem, 3rem);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 1.5rem;
+
+  &.hero {
+    @include responsive-font-size(2.5rem, 3.5rem, 4rem);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
+  }
+}
+
+h2 {
+  @include responsive-font-size(1.75rem, 2rem, 2.25rem);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  @include responsive-font-size(1.5rem, 1.75rem, 2rem);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 1rem;
+}
+
+h4 {
+  @include responsive-font-size(1.25rem, 1.5rem, 1.75rem);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 0.875rem;
+}
+
+h5 {
+  @include responsive-font-size(1.125rem, 1.25rem, 1.5rem);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 0.75rem;
+}
+
+h6 {
+  @include responsive-font-size(1rem, 1.125rem, 1.25rem);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Paragraphs
+p {
+  font-family: var(--font-family-primary);
+  color: var(--theme-text);
+  font-size: 1rem;
+  line-height: var(--line-height-normal);
+  margin: 0 0 1rem 0;
+  font-weight: var(--font-weight-normal);
+
+  &.lead {
+    @include responsive-font-size(1.125rem, 1.25rem, 1.375rem);
+    font-weight: var(--font-weight-light);
+    line-height: var(--line-height-relaxed);
+    color: var(--theme-heading);
+    margin-bottom: 1.5rem;
+  }
+
+  &.small {
+    font-size: 0.875rem;
+    line-height: var(--line-height-normal);
+  }
+
+  &.muted {
+    color: var(--color-muted);
+  }
+
+  &.serif {
+    font-family: var(--font-family-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+}
+
+// Utility Classes
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+// Responsive Typography
+@media (max-width: 767px) {
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin-bottom: 0.875rem;
+  }
+}
+
+// Print Styles
+@media print {
+  h1, h2, h3, h4, h5, h6 {
+    color: #000;
+    page-break-after: avoid;
+  }
+
+  p {
+    color: #000;
+    orphans: 3;
+    widows: 3;
+  }
+}
