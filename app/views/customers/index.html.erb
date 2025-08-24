@@ -1,303 +1,52 @@
+<!-- app/views/customers/index.html.erb -->
 <div class="dashboard-header">
-  <h1 class="page-title">Dashboard</h1>
+  <h1>Kunden</h1>
   <div class="dashboard-actions">
-    <button class="btn" data-action="click->layout#exportData">Exportieren</button>
-    <button class="btn btn-primary" data-action="click->layout#createNewEntry">Neuer Eintrag</button>
+    <%= link_to "Neuer Kunde", new_customer_path, class: "btn btn-primary" %>
   </div>
 </div>
 
-<!-- KPI Cards -->
-<div class="kpi-grid">
-  <div class="kpi-card" data-layout-target="kpiCard">
-    <div class="kpi-header">
-      <div class="kpi-title">Gesamtumsatz</div>
-      <div class="kpi-icon">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
-        </svg>
-      </div>
-    </div>
-    <div class="kpi-value">€ 124.580</div>
-    <div class="kpi-change positive">
-      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7 14l5-5 5 5z"/>
-      </svg>
-      +12.5% vs. Vormonat
+<div class="table-card">
+  <div class="table-toolbar">
+    <div class="toolbar-left">
+      <h1>Kundenliste</h1>
     </div>
   </div>
 
-  <div class="kpi-card success" data-layout-target="kpiCard">
-    <div class="kpi-header">
-      <div class="kpi-title">Aktive Projekte</div>
-      <div class="kpi-icon">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M9 11h6v2H9v-2zm0-4h6v2H9V7zm0 8h6v2H9v-2zm-4-8h2v2H5V7zm0 4h2v2H5v-2zm0 4h2v2H5v-2z"/>
-        </svg>
-      </div>
-    </div>
-    <div class="kpi-value">23</div>
-    <div class="kpi-change positive">
-      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7 14l5-5 5 5z"/>
-      </svg>
-      +3 neue diese Woche
-    </div>
-  </div>
-
-  <div class="kpi-card warning" data-layout-target="kpiCard">
-    <div class="kpi-header">
-      <div class="kpi-title">Offene Rechnungen</div>
-      <div class="kpi-icon">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-        </svg>
-      </div>
-    </div>
-    <div class="kpi-value">€ 15.420</div>
-    <div class="kpi-change negative">
-      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7 10l5 5 5-5z"/>
-      </svg>
-      5 überfällig
-    </div>
-  </div>
-
-  <div class="kpi-card info" data-layout-target="kpiCard">
-    <div class="kpi-header">
-      <div class="kpi-title">Neue Kunden</div>
-      <div class="kpi-icon">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-        </svg>
-      </div>
-    </div>
-    <div class="kpi-value">8</div>
-    <div class="kpi-change positive">
-      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7 14l5-5 5 5z"/>
-      </svg>
-      +2 diese Woche
-    </div>
-  </div>
-</div>
-
-<!-- Dashboard Content Grid -->
-<div class="dashboard-grid">
-  <!-- Chart Section -->
-  <div class="dashboard-section">
-    <div class="section-header">
-      <h3 class="section-title">Umsatzentwicklung</h3>
-      <button class="btn">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M19 12v7H5v-7M12 2l-7 7h4v6h6v-6h4l-7-7z"/>
-        </svg>
-        Export
-      </button>
-    </div>
-    <div class="section-body">
-      <div class="chart-container">
-        📊 Umsatzdiagramm wird hier angezeigt<br>
-        <small>(Chart.js, D3.js oder andere Bibliothek)</small>
-      </div>
-    </div>
-  </div>
-
-  <!-- Activity Feed -->
-  <div class="dashboard-section">
-    <div class="section-header">
-      <h3 class="section-title">Letzte Aktivitäten</h3>
-      <button class="btn live-button">
-        Live
-        <div data-layout-target="liveIndicator" class="live-indicator"></div>
-      </button>
-    </div>
-    <div class="section-body">
-      <div class="activity-item">
-        <div class="activity-dot activity-dot-default"></div>
-        <div class="activity-content">
-          <div class="activity-title">Neue Rechnung erstellt</div>
-          <div class="activity-meta">Hightech GmbH • R-2024-156 • vor 2 Stunden</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-dot activity-dot-success"></div>
-        <div class="activity-content">
-          <div class="activity-title">Projekt abgeschlossen</div>
-          <div class="activity-meta">Website-Relaunch • vor 1 Tag</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-dot activity-dot-info"></div>
-        <div class="activity-content">
-          <div class="activity-title">Neuer Kunde</div>
-          <div class="activity-meta">TechStart GmbH • vor 2 Tagen</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-dot activity-dot-success"></div>
-        <div class="activity-content">
-          <div class="activity-title">Zahlung eingegangen</div>
-          <div class="activity-meta">€ 2.450 • Innovate AG • vor 3 Tagen</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-dot activity-dot-warning"></div>
-        <div class="activity-content">
-          <div class="activity-title">Mahnung versendet</div>
-          <div class="activity-meta">Global Ltd. • vor 4 Tagen</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Recent Orders Table -->
-<div class="dashboard-section">
-  <div class="section-header">
-    <h3 class="section-title">Aktuelle Aufträge</h3>
-    <button class="btn btn-primary" data-action="click->layout#createNewOrder">Neuer Auftrag</button>
-  </div>
-  <div class="section-body" data-table="true">
+  <div class="table-wrapper">
     <table class="data-table">
       <thead>
       <tr>
-        <th>Auftragsnr.</th>
-        <th>Kunde</th>
-        <th>Projekt</th>
-        <th>Betrag</th>
+        <th>Nr</th>
+        <th>Name</th>
+        <th>Gruppe</th>
+        <th class="is-numeric">USt</th>
         <th>Status</th>
-        <th>Fälligkeitsdatum</th>
-        <th>Bearbeiter</th>
+        <th class="is-actions">Aktionen</th>
       </tr>
       </thead>
       <tbody>
-      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
-        <td><strong>A-2024-001</strong></td>
-        <td>Hightech GmbH Osnabrück</td>
-        <td>CRM System Implementation</td>
-        <td><strong>€ 15.500</strong></td>
-        <td><span class="status-badge success">Aktiv</span></td>
-        <td>15.03.2024</td>
-        <td>M. Schmidt</td>
-      </tr>
-      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
-        <td><strong>A-2024-002</strong></td>
-        <td>Innovate AG Hamburg</td>
-        <td>Mobile App Development</td>
-        <td><strong>€ 25.000</strong></td>
-        <td><span class="status-badge warning">Wartend</span></td>
-        <td>22.03.2024</td>
-        <td>A. Müller</td>
-      </tr>
-      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
-        <td><strong>A-2024-003</strong></td>
-        <td>StartUp Co. Berlin</td>
-        <td>Corporate Website</td>
-        <td><strong>€ 8.900</strong></td>
-        <td><span class="status-badge success">Aktiv</span></td>
-        <td>10.04.2024</td>
-        <td>L. Weber</td>
-      </tr>
-      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
-        <td><strong>A-2024-004</strong></td>
-        <td>Global Ltd. München</td>
-        <td>E-Commerce Platform</td>
-        <td><strong>€ 32.000</strong></td>
-        <td><span class="status-badge danger">Verzögert</span></td>
-        <td>05.03.2024</td>
-        <td>T. Fischer</td>
-      </tr>
-      <tr data-layout-target="tableRow" data-action="click->layout#selectTableRow">
-        <td><strong>A-2024-005</strong></td>
-        <td>Regional Bank AG</td>
-        <td>Security Audit</td>
-        <td><strong>€ 12.000</strong></td>
-        <td><span class="status-badge success">Aktiv</span></td>
-        <td>28.03.2024</td>
-        <td>K. Braun</td>
-      </tr>
+      <% @customers.each do |k| %>
+        <tr id="<%= dom_id(k) %>">
+          <td><%= k.kundennr %></td>
+          <td class="truncate"><%= k.name %></td>
+          <td><%= k.kundgruppe %></td>
+          <td class="is-numeric"><%= k.umsatzsteuer %></td>
+          <td>
+              <span class="status-badge <%= k.aktiv? ? 'success' : 'danger' %>">
+                <%= k.aktiv? ? "aktiv" : "gekündigt" %>
+              </span>
+          </td>
+          <td class="is-actions">
+            <%= link_to "Anzeigen", k, class: "btn btn-ghost" %>
+            <%= link_to "Bearbeiten", edit_customer_path(k), class: "btn btn-ghost" %>
+            <%= link_to "Löschen", k,
+                        class: "btn btn-ghost danger",
+                        data: { turbo_method: :delete, turbo_confirm: "Wirklich löschen?" } %>
+          </td>
+        </tr>
+      <% end %>
       </tbody>
     </table>
-  </div>
-</div>
-
-<!-- Additional Dashboard Row -->
-<div class="dashboard-grid dashboard-grid-additional">
-  <!-- Quick Stats -->
-  <div class="dashboard-section">
-    <div class="section-header">
-      <h3 class="section-title">Monatsstatistiken</h3>
-    </div>
-    <div class="section-body">
-      <div class="stats-grid">
-        <div class="stat-card stat-card-accent">
-          <div class="stat-value">47</div>
-          <div class="stat-label">Abgeschlossene Projekte</div>
-        </div>
-        <div class="stat-card stat-card-success">
-          <div class="stat-value">98%</div>
-          <div class="stat-label">Kundenzufriedenheit</div>
-        </div>
-        <div class="stat-card stat-card-warning">
-          <div class="stat-value">12</div>
-          <div class="stat-label">Offene Angebote</div>
-        </div>
-        <div class="stat-card stat-card-info">
-          <div class="stat-value">156h</div>
-          <div class="stat-label">Arbeitsstunden</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Team Status -->
-  <div class="dashboard-section">
-    <div class="section-header">
-      <h3 class="section-title">Team Status</h3>
-    </div>
-    <div class="section-body">
-      <div class="team-list">
-        <div class="team-member">
-          <div class="team-member-info">
-            <div class="team-avatar team-avatar-success">MS</div>
-            <div class="team-details">
-              <div class="team-name">Max Schmidt</div>
-              <div class="team-role">Senior Developer</div>
-            </div>
-          </div>
-          <span class="status-indicator status-available">● Verfügbar</span>
-        </div>
-        <div class="team-member">
-          <div class="team-member-info">
-            <div class="team-avatar team-avatar-accent">AM</div>
-            <div class="team-details">
-              <div class="team-name">Anna Müller</div>
-              <div class="team-role">UI/UX Designer</div>
-            </div>
-          </div>
-          <span class="status-indicator status-busy">● Im Meeting</span>
-        </div>
-        <div class="team-member">
-          <div class="team-member-info">
-            <div class="team-avatar team-avatar-info">LW</div>
-            <div class="team-details">
-              <div class="team-name">Lisa Weber</div>
-              <div class="team-role">Project Manager</div>
-            </div>
-          </div>
-          <span class="status-indicator status-available">● Verfügbar</span>
-        </div>
-        <div class="team-member">
-          <div class="team-member-info">
-            <div class="team-avatar team-avatar-muted">TF</div>
-            <div class="team-details">
-              <div class="team-name">Tom Fischer</div>
-              <div class="team-role">Backend Developer</div>
-            </div>
-          </div>
-          <span class="status-indicator status-offline">● Offline</span>
-        </div>
-      </div>
-    </div>
   </div>
 </div>

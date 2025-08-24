@@ -31,7 +31,6 @@ export default class extends Controller {
         this.loadUserPreferences()
         this.animateKpiCards()
         this.startLiveUpdates()
-        this.element.layoutController = this
     }
 
     disconnect() {
@@ -360,8 +359,31 @@ export default class extends Controller {
 
     // Sidebar Navigation (erweitert)
     selectSidebarItem(event) {
-        this.sidebarLinkTargets.forEach(link => link.classList.remove("active"))
-        event.currentTarget.classList.add("active")
+        // Don't prevent default for actual navigation links
+        const link = event.currentTarget
+        const href = link.getAttribute('href')
+
+        // If it's a hash link (like #analytics), prevent default and handle locally
+        if (href.startsWith('#')) {
+            event.preventDefault()
+
+            // Update active states for hash links only
+            this.sidebarLinkTargets.forEach(sidebarLink => {
+                if (sidebarLink.getAttribute('href').startsWith('#')) {
+                    sidebarLink.classList.remove("active")
+                }
+            })
+            event.currentTarget.classList.add("active")
+
+            // Optional: Handle hash navigation
+            const targetId = href.substring(1)
+            const targetElement = document.getElementById(targetId)
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+        // For real links (like customers_path), let them navigate normally
+        // The server-side will handle the active state via Rails helpers
     }
 
     // Top Navigation
@@ -388,13 +410,12 @@ export default class extends Controller {
         if (this.hasKpiCardTarget) {
             this.kpiCardTargets.forEach((card, index) => {
                 setTimeout(() => {
-                    card.style.opacity = '0'
-                    card.style.transform = 'translateY(20px)'
-                    card.style.transition = 'all 0.6s ease'
+                    // Use CSS classes instead of inline styles
+                    card.classList.add('kpi-card-animate-start')
 
                     setTimeout(() => {
-                        card.style.opacity = '1'
-                        card.style.transform = 'translateY(0)'
+                        card.classList.remove('kpi-card-animate-start')
+                        card.classList.add('kpi-card-animate-end')
                     }, 100)
                 }, index * 150)
             })
@@ -405,9 +426,10 @@ export default class extends Controller {
     startLiveUpdates() {
         this.liveUpdateInterval = setInterval(() => {
             if (this.hasLiveIndicatorTarget) {
-                this.liveIndicatorTarget.style.animation = 'none'
+                // Use CSS classes instead of inline styles
+                this.liveIndicatorTarget.classList.remove('pulse-animation')
                 setTimeout(() => {
-                    this.liveIndicatorTarget.style.animation = 'pulse 2s infinite'
+                    this.liveIndicatorTarget.classList.add('pulse-animation')
                 }, 100)
             }
         }, 8000)

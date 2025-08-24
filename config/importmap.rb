@@ -10,4 +10,3 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 # Custom layout helpers
 pin "layout_helpers", to: "layout_helpers.js", preload: true
-

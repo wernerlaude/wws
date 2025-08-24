@@ -1,6 +1,7 @@
 /* ====================================
-   7. KPI CARDS
+   KPI CARDS
    ==================================== */
+
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -16,31 +17,40 @@
   position: relative;
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
   /* Initial state for animation */
   opacity: 0;
   transform: translateY(20px);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px hsla(50, 96%, 57%, 0.2);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+  }
+
+  &.success::before {
+    background: var(--gradient-success);
+  }
+
+  &.warning::before {
+    background: var(--gradient-warning);
+  }
+
+  &.info::before {
+    background: var(--gradient-info);
+  }
 }
 
-.kpi-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px hsla(50, 96%, 57%, 0.2);
-}
-
-.kpi-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--gradient-primary);
-}
-
-.kpi-card.success::before { background: var(--gradient-success); }
-.kpi-card.warning::before { background: var(--gradient-warning); }
-.kpi-card.info::before { background: var(--gradient-info); }
-
-/* KPI Card Content */
+// KPI Card Content
 .kpi-header {
   display: flex;
   justify-content: space-between;
@@ -66,24 +76,24 @@
   background: linear-gradient(135deg, hsla(50, 96%, 57%, 0.15) 0%, hsla(50, 96%, 67%, 0.1) 100%);
   color: #5d4e37;
   border: 1px solid var(--accent);
-}
 
-.kpi-card.success .kpi-icon {
-  background: linear-gradient(135deg, rgba(39, 174, 96, 0.15) 0%, rgba(88, 214, 141, 0.1) 100%);
-  color: var(--success);
-  border-color: var(--success);
-}
+  .kpi-card.success & {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.15) 0%, rgba(88, 214, 141, 0.1) 100%);
+    color: var(--success);
+    border-color: var(--success);
+  }
 
-.kpi-card.warning .kpi-icon {
-  background: linear-gradient(135deg, rgba(230, 126, 34, 0.15) 0%, rgba(247, 220, 111, 0.1) 100%);
-  color: var(--warning);
-  border-color: var(--warning);
-}
+  .kpi-card.warning & {
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.15) 0%, rgba(247, 220, 111, 0.1) 100%);
+    color: var(--warning);
+    border-color: var(--warning);
+  }
 
-.kpi-card.info .kpi-icon {
-  background: linear-gradient(135deg, rgba(243, 156, 18, 0.15) 0%, hsla(50, 96%, 67%, 0.1) 100%);
-  color: var(--info);
-  border-color: var(--info);
+  .kpi-card.info & {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.15) 0%, hsla(50, 96%, 67%, 0.1) 100%);
+    color: var(--info);
+    border-color: var(--info);
+  }
 }
 
 .kpi-value {
@@ -98,7 +108,37 @@
   display: flex;
   align-items: center;
   gap: 4px;
+
+  &.positive {
+    color: var(--success);
+  }
+
+  &.negative {
+    color: var(--danger);
+  }
 }
 
-.kpi-change.positive { color: var(--success); }
-.kpi-change.negative { color: var(--danger); }
+// Live indicator for buttons
+.live-indicator {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+
+  &.pulse-animation {
+    animation: pulse 2s infinite;
+  }
+}
+
+// Animation classes for KPI cards
+.kpi-card-animate-start {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+.kpi-card-animate-end {
+  opacity: 1;
+  transform: translateY(0);
+}

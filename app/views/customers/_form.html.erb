@@ -1,0 +1,63 @@
+<!-- app/views/customers/_form.html.erb -->
+<%= render "shared/errors", object: customer %>
+
+<%= form_with(model: customer) do |f| %>
+  <div class="field">
+    <%= f.label :kundennr, "Kundennummer" %>
+    <%= f.number_field :kundennr, required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :kundgruppe, "Kundengruppe" %>
+    <%= f.number_field :kundgruppe %>
+  </div>
+
+  <div class="field">
+    <%= f.label :bundesland %>
+    <%= f.number_field :bundesland %>
+  </div>
+
+  <div class="field">
+    <%= f.label :umsatzsteuer %>
+    <%= f.select :umsatzsteuer, [["Ja","J"],["Nein","N"]], include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :gekuendigt, "Gekündigt" %>
+    <%= f.select :gekuendigt, [["Ja","J"],["Nein","N"]], include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :mitgliednr, "Mitgliedsnummer" %>
+    <%= f.text_field :mitgliednr %>
+  </div>
+
+  <div class="field">
+    <%= f.label :rabatt, "Rabatt (%)" %>
+    <%= f.number_field :rabatt, step: 0.01 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :zahlungart, "Zahlungsart" %>
+    <%= f.text_field :zahlungart %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fremdwaehrung, "Währung" %>
+    <%= f.text_field :fremdwaehrung %>
+  </div>
+
+  <div class="field">
+    <%= f.label :datumeintritt, "Eintrittsdatum" %>
+    <%= f.date_field :datumeintritt %>
+  </div>
+
+  <div class="field">
+    <%= f.label :datumaustritt, "Austrittsdatum" %>
+    <%= f.date_field :datumaustritt %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

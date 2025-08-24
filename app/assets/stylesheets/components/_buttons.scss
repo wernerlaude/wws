@@ -1,0 +1,119 @@
+/* ====================================
+   BUTTONS
+   ==================================== */
+
+.btn {
+  border: 1px solid var(--border);
+  background: linear-gradient(#fff, #f0f4f9);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--text);
+  font-family: inherit;
+
+  &:hover {
+    background: linear-gradient(#f8fafc, #e2e8f0);
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// Button variants
+.btn-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border-color: transparent;
+
+  &:hover {
+    background: linear-gradient(135deg, var(--metz-yellow-light) 0%, var(--info) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px hsla(50, 96%, 57%, 0.25);
+  }
+}
+
+.btn-success {
+  background: var(--gradient-success);
+  color: white;
+  border-color: transparent;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-warning {
+  background: var(--gradient-warning);
+  color: white;
+  border-color: transparent;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+  border-color: transparent;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+}
+
+// Button sizes
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+// Special button styles
+.btn-live {
+  font-size: 12px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+
+  &:hover {
+    border-color: var(--divider);
+    background: #fff;
+  }
+
+  &.danger:hover {
+    color: var(--danger);
+    border-color: rgba(231,76,60,.35);
+  }
+}

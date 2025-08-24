@@ -1,0 +1,29 @@
+<!-- app/views/customers/show.html.erb -->
+<h1>Kunde <%= @customer.kundennr %></h1>
+
+<p><strong>Name:</strong> <%= @customer.name %></p>
+<p><strong>Gruppe:</strong> <%= @customer.kundgruppe %></p>
+<p><strong>Bundesland:</strong> <%= @customer.bundesland %></p>
+<p><strong>Umsatzsteuer:</strong> <%= @customer.umsatzsteuer %></p>
+<p><strong>Status:</strong> <%= @customer.aktiv? ? "aktiv" : "gekündigt" %></p>
+<p><strong>Mitgliedsnummer:</strong> <%= @customer.mitgliednr %></p>
+<p><strong>Rabatt (%):</strong> <%= @customer.rabatt %></p>
+<p><strong>Zahlungsart:</strong> <%= @customer.zahlungart %></p>
+<p><strong>Währung:</strong> <%= @customer.waehrung %></p>
+<p><strong>Eintritt:</strong> <%= @customer.datumeintritt %></p>
+<p><strong>Austritt:</strong> <%= @customer.datumaustritt %></p>
+
+<% if @customer.address %>
+  <hr>
+  <h2>Adresse</h2>
+  <p><strong>Nummer:</strong> <%= @customer.address.nummer %></p>
+  <p><strong>Name:</strong> <%= @customer.address.voller_name %></p>
+  <p><strong>Anschrift:</strong> <%= @customer.address.anschrift_komplett %></p>
+  <p><strong>Telefon:</strong> <%= @customer.address.telefon1 %> / <%= @customer.address.telefon2 %></p>
+  <p><strong>E-Mail:</strong> <%= @customer.address.email %></p>
+<% end %>
+
+<p>
+  <%= link_to "Bearbeiten", edit_customer_path(@customer), class: "btn btn-secondary" %>
+  <%= link_to "Zurück", customers_path, class: "btn btn-link" %>
+</p>

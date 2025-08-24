@@ -36,6 +36,5 @@ Rails.application.configure do
 
   # Nonce einschalten (wichtig!)
   config.content_security_policy_nonce_generator  = ->(_req) { SecureRandom.base64(16) }
-  config.content_security_policy_nonce_directives = %w(script-src)
+  config.content_security_policy_nonce_directives = %w[script-src]
 end
-

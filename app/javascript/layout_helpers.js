@@ -23,12 +23,13 @@ class ThemeIconsManager {
 
         const updateThemeIcons = () => {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            // Use CSS classes instead of inline styles
             if (isDark) {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
+                sunIcon.classList.add('d-none');
+                moonIcon.classList.remove('d-none');
             } else {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
+                sunIcon.classList.remove('d-none');
+                moonIcon.classList.add('d-none');
             }
         };
 
@@ -59,10 +60,11 @@ class ScrollToTopManager {
             const scrollBtn = document.querySelector('.scroll-to-top');
             if (!scrollBtn) return;
 
+            // Use CSS classes instead of inline styles
             if (window.pageYOffset > 100) {
-                scrollBtn.style.display = 'flex';
+                scrollBtn.classList.add('scroll-to-top-show');
             } else {
-                scrollBtn.style.display = 'none';
+                scrollBtn.classList.remove('scroll-to-top-show');
             }
         });
     }
@@ -185,10 +187,7 @@ class ResponsiveManager {
     handleResize() {
         const width = window.innerWidth;
 
-        // Update CSS custom properties for JavaScript access
-        document.documentElement.style.setProperty('--window-width', `${width}px`);
-
-        // Add responsive classes to body
+        // Add responsive classes to body (no inline styles)
         document.body.classList.toggle('is-mobile', width < this.breakpoints.mobile);
         document.body.classList.toggle('is-tablet',
             width >= this.breakpoints.mobile && width < this.breakpoints.desktop);
@@ -315,7 +314,8 @@ class AccessibilityManager {
             liveRegion.id = 'live-region';
             liveRegion.setAttribute('aria-live', 'polite');
             liveRegion.setAttribute('aria-atomic', 'true');
-            liveRegion.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;';
+            // Use CSS class instead of inline style
+            liveRegion.className = 'sr-only';
             document.body.appendChild(liveRegion);
         }
     }
